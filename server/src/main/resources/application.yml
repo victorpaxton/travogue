@@ -1,0 +1,40 @@
+server:
+  port: ${PORT:8085}
+  servlet:
+    context-path: /travogue-service
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,application/javascript,application/json
+
+spring:
+  application:
+    name: travogue-local
+    security:
+      jwt:
+        secret-key: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+        expiration: 86400000 # 30 seconds
+        refresh-token:
+          expiration: 2419200000 # 1 minute
+        reset-token:
+          expiration: 900000 # 1 minute
+
+  web:
+    resources:
+      static-locations: file:/home
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+logging:
+  level:
+    org:
+      springframework:
+        web: DEBUG
+      hibernate: ERROR
+  file:
+    path: /home/logs/
+
+springdoc:
+  override-with-generic-response: false
