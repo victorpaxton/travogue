@@ -1,4 +1,4 @@
-<h1>Travogue</h1>
+<h1>Travogue Service</h1>
 
 
-Swagger: [http://localhost:8080/travogue-service/swagger-ui/index.html](http://localhost:8080/travogue-service/swagger-ui/index.html)
+API Documentation: [https://travogue-production.up.railway.app/travogue-service/swagger-ui/index.html](https://travogue-production.up.railway.app/travogue-service/swagger-ui/index.html)
