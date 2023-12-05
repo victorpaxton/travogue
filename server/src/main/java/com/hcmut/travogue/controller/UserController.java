@@ -1,6 +1,6 @@
 package com.hcmut.travogue.controller;
 
-import com.hcmut.travogue.model.dto.UserRegisterDTO;
+import com.hcmut.travogue.model.dto.Auth.EmailDTO;
 import com.hcmut.travogue.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,8 +16,4 @@ public class UserController {
     @Autowired
     private IUserService userService;
 
-    @PostMapping
-    public ResponseEntity addUser(UserRegisterDTO userRegisterDTO) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(userService.addUser(userRegisterDTO));
-    }
 }

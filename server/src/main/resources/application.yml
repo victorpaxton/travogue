@@ -27,14 +27,24 @@ spring:
       ddl-auto: update
     show-sql: true
 
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: t10tqh@gmail.com
+    password: pyomoafrtlybjlmg
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
 logging:
   level:
     org:
       springframework:
         web: DEBUG
       hibernate: ERROR
-  file:
-    path: /home/logs/
 
 springdoc:
   override-with-generic-response: false

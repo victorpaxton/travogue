@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Date;
 import java.util.UUID;
 
 @Data
@@ -29,6 +30,16 @@ public class User extends BaseEntity {
     private String lastName;
 
     private String password;
+
+    @Temporal(TemporalType.DATE)
+    private Date birthdate;
+
+    private String phone;
+
+    private String avatar;
+
+    @Column(name = "bio_intro")
+    private String bioIntro;
 
     private String roles;
 

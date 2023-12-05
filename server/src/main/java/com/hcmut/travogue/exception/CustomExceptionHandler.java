@@ -2,8 +2,8 @@ package com.hcmut.travogue.exception;
 
 import com.hcmut.travogue.model.dto.Response.ErrorDTO;
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
-import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;

@@ -88,6 +88,10 @@ public class JwtService {
         return buildTokenByUser(user, resetExpiration, TokenType.RESET_PASSWORD);
     }
 
+    public String regenerateRefreshTokenByUser(User user, long remaining) {
+        return buildTokenByUser(user, remaining, TokenType.REFRESH);
+    }
+
 
     private String buildToken(
             SessionUser extraClaims,
@@ -115,6 +119,21 @@ public class JwtService {
                 .builder()
                 .setSubject(String.valueOf(user.getId()))
                 .claim("email", user.getEmail())
+                .claim("type", tokenType)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+
+    public String buildTokenByEmail(
+            String email,
+            long expiration,
+            TokenType tokenType
+    ) {
+        return Jwts
+                .builder()
+                .setSubject(email)
                 .claim("type", tokenType)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))

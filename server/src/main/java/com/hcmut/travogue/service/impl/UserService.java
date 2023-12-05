@@ -1,6 +1,6 @@
 package com.hcmut.travogue.service.impl;
 
-import com.hcmut.travogue.model.dto.UserRegisterDTO;
+import com.hcmut.travogue.model.dto.Auth.EmailDTO;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IUserService;
@@ -17,7 +17,7 @@ public class UserService implements IUserService {
     @Autowired
     private ModelMapper modelMapper;
 
-    public User addUser(UserRegisterDTO userRegisterDTO) {
-        return userRepository.save(modelMapper.map(userRegisterDTO, User.class));
+    public User addUser(String email) {
+        return userRepository.save(User.builder().email(email).build());
     }
 }
