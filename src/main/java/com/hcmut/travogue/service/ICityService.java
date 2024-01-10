@@ -10,4 +10,6 @@ public interface ICityService {
     public List<City> getPopularCities();
     public List<City> getCities();
     public PageResponse<City> searchCities(int pageNumber, int pageSize, String sortField, String criteria);
+
+    public void dumpData();
 }

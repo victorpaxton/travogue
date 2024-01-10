@@ -52,4 +52,18 @@ public class CityController {
                 .build();
 
     }
+
+    @PostMapping("/dumpdata")
+    @Operation(summary = "")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> dumpData() {
+        cityService.dumpData();
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data("Completed")
+                .errors(null)
+                .build();
+
+    }
 }
