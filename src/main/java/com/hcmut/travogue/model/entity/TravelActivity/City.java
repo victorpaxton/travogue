@@ -23,11 +23,15 @@ public class City extends BaseEntity {
 
     private String name;
 
+    private String destinations;
+
     @Column(columnDefinition = "text")
     private String description;
 
     @Column(columnDefinition = "text", name = "city_tags")
     private String cityTags;
+
+    private String images;
 
     private String country;
 
