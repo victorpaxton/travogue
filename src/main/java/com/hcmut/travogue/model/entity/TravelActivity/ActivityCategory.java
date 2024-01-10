@@ -33,6 +33,9 @@ public class ActivityCategory extends BaseEntity {
     @Column(columnDefinition = "text")
     private String svg;
 
+    @Column(columnDefinition = "text", name = "svg_active")
+    private String svgActive;
+
     @ManyToOne
     @JoinColumn(name = "parent_id", referencedColumnName = "id")
     @JsonBackReference

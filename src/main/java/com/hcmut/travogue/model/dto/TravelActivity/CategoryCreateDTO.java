@@ -8,5 +8,4 @@ public class CategoryCreateDTO {
 
     private String description;
 
-    private String svg;
 }
