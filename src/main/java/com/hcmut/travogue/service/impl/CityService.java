@@ -20,7 +20,7 @@ public class CityService implements ICityService {
 
     @Override
     public List<City> getPopularCities() {
-        return cityRepository.findFirst10ByOrderByTravelPoint();
+        return cityRepository.findFirst10ByOrderByTravelPointDesc();
     }
 
     @Override
