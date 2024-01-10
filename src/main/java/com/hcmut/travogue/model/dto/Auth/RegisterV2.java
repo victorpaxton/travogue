@@ -6,7 +6,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 @Data
-public class LoginDTO {
+public class RegisterV2 {
+    private String name;
+
     @Schema(example = "hhqthang@gmail.com")
     @Email(message = "Email is not valid")
     private String email;

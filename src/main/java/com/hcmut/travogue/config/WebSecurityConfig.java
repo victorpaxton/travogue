@@ -33,24 +33,25 @@ public class WebSecurityConfig {
                 .cors(cors -> corsConfigurationSource())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(request -> request
-                                .requestMatchers("/v3/api-docs",
-                                        "/v3/api-docs/**",
-                                        "/swagger-resources",
-                                        "/swagger-resources/**",
-                                        "/configuration/ui",
-                                        "/configuration/security",
-                                        "/swagger-ui/**",
-                                        "/auth/otp/generate",
-                                        "/auth/otp/verification",
-                                        "/auth/register",
-                                        "/auth/login",
-                                        "/auth/forgot-password",
-                                        "/auth/reset-password",
-                                        "/auth/refresh-tokens",
-                                        "/webjars/**",
-                                        "/swagger-ui.html",
-                                        "/static/**").permitAll()
-                                .anyRequest().authenticated()
+                        .requestMatchers("/v3/api-docs",
+                                "/v3/api-docs/**",
+                                "/swagger-resources",
+                                "/swagger-resources/**",
+                                "/configuration/ui",
+                                "/configuration/security",
+                                "/swagger-ui/**",
+                                "/auth/otp/generate",
+                                "/auth/otp/verification",
+                                "/auth/register",
+                                "/auth/register-v2",
+                                "/auth/login",
+                                "/auth/forgot-password",
+                                "/auth/reset-password",
+                                "/auth/refresh-tokens",
+                                "/webjars/**",
+                                "/swagger-ui.html",
+                                "/static/**").permitAll()
+                        .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -58,7 +59,6 @@ public class WebSecurityConfig {
                 .exceptionHandling(exception ->
                         exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 )
-
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .logout(logout -> logout.logoutSuccessHandler(

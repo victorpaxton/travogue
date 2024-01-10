@@ -1,9 +1,6 @@
 package com.hcmut.travogue.controller;
 
-import com.hcmut.travogue.model.dto.Auth.EmailDTO;
-import com.hcmut.travogue.model.dto.Auth.LoginDTO;
-import com.hcmut.travogue.model.dto.Auth.OTPVerificationDTO;
-import com.hcmut.travogue.model.dto.Auth.RefreshTokenRequest;
+import com.hcmut.travogue.model.dto.Auth.*;
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
 import com.hcmut.travogue.service.IAuthService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -64,6 +61,7 @@ public class AuthController {
 
     @PostMapping("/login")
     @Operation(summary = "Login with email and password")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> login(@RequestBody @Valid LoginDTO loginDTO) throws AuthenticationException {
         return ResponseModel.builder()
                 .isSuccess(true)
@@ -74,6 +72,7 @@ public class AuthController {
 
     @PostMapping("/refresh-tokens")
     @Operation(summary = "Refresh tokens")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> refreshToken(@RequestBody RefreshTokenRequest refreshTokenRequest) {
         return ResponseModel.builder()
                 .isSuccess(true)
@@ -84,6 +83,7 @@ public class AuthController {
 
     @PostMapping("/forgot-password")
     @Operation(summary = "Forgot password")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> forgotPassword(@RequestBody @Valid EmailDTO emailDTO) throws MessagingException, UnsupportedEncodingException {
         authService.forgotPassword(emailDTO.getEmail());
 
@@ -96,6 +96,7 @@ public class AuthController {
 
     @PostMapping("/reset-password")
     @Operation(summary = "Reset password")
+    @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> resetPassword(@RequestParam("token") String token, @RequestBody @Valid LoginDTO loginDTO) {
         authService.resetPassword(token, loginDTO);
 
@@ -106,5 +107,27 @@ public class AuthController {
                 .build();
     }
 
+    @PostMapping("/logout")
+    @Operation(summary = "Logout")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> logout(@RequestBody RefreshTokenRequest refreshTokenRequest) {
+        authService.logout(refreshTokenRequest);
 
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data("Log out successfully")
+                .errors(null)
+                .build();
+    }
+
+    @PostMapping("/register-v2")
+    @Operation(summary = "Register account with username, email and password")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseModel<Object> registerv2(@RequestBody @Valid RegisterV2 registerV2) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(authService.registerV2(registerV2))
+                .errors(null)
+                .build();
+    }
 }

@@ -1,8 +1,12 @@
 package com.hcmut.travogue.service;
 
-import com.hcmut.travogue.model.dto.Auth.EmailDTO;
-import com.hcmut.travogue.model.entity.User.User;
+import com.hcmut.travogue.model.dto.Response.PageResponse;
+import com.hcmut.travogue.model.dto.User.UserProfileDTO;
+
+import java.util.UUID;
 
 public interface IUserService {
-    User addUser(String email);
+    public UserProfileDTO getUser(UUID userId);
+
+    public PageResponse<UserProfileDTO> getUsers(String keyword, int pageNumber, int pageSize, String sortField);
 }

@@ -2,10 +2,7 @@ package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.exception.BadRequestException;
 import com.hcmut.travogue.model.TokenType;
-import com.hcmut.travogue.model.dto.Auth.AuthenticationResponseDTO;
-import com.hcmut.travogue.model.dto.Auth.LoginDTO;
-import com.hcmut.travogue.model.dto.Auth.RefreshTokenRequest;
-import com.hcmut.travogue.model.dto.Auth.TokenDTO;
+import com.hcmut.travogue.model.dto.Auth.*;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
 import com.hcmut.travogue.model.entity.Auth.OTPCode;
 import com.hcmut.travogue.model.entity.Auth.Token;
@@ -25,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -128,7 +126,7 @@ public class AuthService implements IAuthService {
                 .lastName("")
                 .password(encodedPassword)
                 .phone("")
-                .avatar("/user/avatar/default.jpg")
+                .avatar("https://res.cloudinary.com/dwajaledd/image/upload/v1703950139/user/avatar/wj8krykswzbr6bjbsaih.jpg")
                 .bioIntro("Write something about you!")
                 .roles("ROLE_USER")
                 .isEnabled(true)
@@ -246,6 +244,50 @@ public class AuthService implements IAuthService {
         userRepository.save(user);
 
         otpCodeRepository.delete(otpCode.get());
+    }
+
+    @Override
+    public void logout(RefreshTokenRequest refreshTokenRequest) {
+        Token refreshToken = tokenRepository.findByStrToken(refreshTokenRequest.getToken())
+                .orElseThrow(() -> new AuthenticationException("Refresh token not found") {});
+
+        tokenRepository.delete(refreshToken);
+        SecurityContextHolder.clearContext();
+    }
+
+    @Override
+    public AuthenticationResponseDTO registerV2(RegisterV2 registerV2) {
+        if (userRepository.existsByEmail(registerV2.getEmail()))
+            throw new BadRequestException("Email already in use");
+
+        String encodedPassword = passwordEncoder.encode(registerV2.getPassword());
+
+        User newUser = userRepository.save(
+                User.builder()
+                        .email(registerV2.getEmail())
+                        .firstName("")
+                        .lastName(registerV2.getName())
+                        .password(encodedPassword)
+                        .phone("")
+                        .avatar("https://res.cloudinary.com/dwajaledd/image/upload/v1703950139/user/avatar/wj8krykswzbr6bjbsaih.jpg")
+                        .bioIntro("Write something about you!")
+                        .roles("ROLE_USER")
+                        .isEnabled(true)
+                        .build()
+        );
+
+        String refreshToken = jwtService.generateRefreshTokenByUser(newUser);
+        String accessToken = jwtService.generateTokenByUser(newUser);
+
+        tokenService.addToken(refreshToken, TokenType.REFRESH, newUser);
+
+        return AuthenticationResponseDTO.builder()
+                .user(modelMapper.map(newUser, UserProfileDTO.class))
+                .tokens(AuthenticationResponseDTO.TokenResponse.builder()
+                        .access(new TokenDTO(accessToken, jwtService.extractExpiration(accessToken)))
+                        .refresh(new TokenDTO(refreshToken, jwtService.extractExpiration(refreshToken)))
+                        .build())
+                .build();
     }
 
 }

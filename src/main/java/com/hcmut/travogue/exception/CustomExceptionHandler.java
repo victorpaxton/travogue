@@ -3,6 +3,7 @@ package com.hcmut.travogue.exception;
 import com.hcmut.travogue.model.dto.Response.ErrorDTO;
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -18,7 +19,7 @@ import java.util.stream.Stream;
 @RestControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler({Exception.class, RuntimeException.class})
     @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
     public ErrorDTO handleAllException(Exception ex, WebRequest webRequest) {
         return new ErrorDTO("500", ex.getMessage());
@@ -48,13 +49,13 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler({AuthenticationException.class})
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorDTO unauthorizedException(AuthenticationException ex) {
+    public ErrorDTO unauthorizedException(Exception ex) {
         return new ErrorDTO("401", ex.getMessage());
     }
 
-    @ExceptionHandler({ForbiddenException.class})
+    @ExceptionHandler({ForbiddenException.class, AccessDeniedException.class})
     @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorDTO forbiddenException(ForbiddenException ex) {
+    public ErrorDTO forbiddenException(Exception ex) {
         return new ErrorDTO("403", ex.getMessage());
     }
 }

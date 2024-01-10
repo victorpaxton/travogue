@@ -2,10 +2,7 @@ package com.hcmut.travogue.model.entity.User;
 
 import com.hcmut.travogue.model.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Date;
 import java.util.UUID;
@@ -15,34 +12,35 @@ import java.util.UUID;
 @Table(name = "_user")
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 @Builder
 public class User extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    protected UUID id;
 
-    private String email;
+    protected String email;
 
     @Column(name = "first_name")
-    private String firstName;
+    protected String firstName;
 
     @Column(name = "last_name")
-    private String lastName;
+    protected String lastName;
 
-    private String password;
+    protected String password;
 
     @Temporal(TemporalType.DATE)
-    private Date birthdate;
+    protected Date birthdate;
 
-    private String phone;
+    protected String phone;
 
-    private String avatar;
+    protected String avatar;
 
     @Column(name = "bio_intro")
-    private String bioIntro;
+    protected String bioIntro;
 
-    private String roles;
+    protected String roles;
 
     @Column(name = "is_enabled")
-    private boolean isEnabled;
+    protected boolean isEnabled;
 }
