@@ -32,7 +32,7 @@ public class City extends BaseEntity {
     private String country;
 
     @Column(name = "travel_point")
-    private Double travePoint;
+    private Double travelPoint;
 
     @OneToMany(mappedBy = "city")
     @JsonIgnore

@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
-@Builder
 public class Host extends User {
     @Column(columnDefinition = "text", name = "personal_skills")
     private String personalSkills;
