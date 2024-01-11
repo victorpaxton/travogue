@@ -2,7 +2,9 @@ package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.entity.TravelActivity.City;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.repository.TravelActivity.CityRepository;
+import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.service.ICityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -12,11 +14,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class CityService implements ICityService {
     @Autowired
     private CityRepository cityRepository;
+
+    @Autowired
+    private TravelActivityRepository travelActivityRepository;
 
     @Override
     public List<City> getPopularCities() {
@@ -33,6 +39,12 @@ public class CityService implements ICityService {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
 
         return new PageResponse<>(cityRepository.findPageCities(criteria, pageable));
+    }
+
+    @Override
+    public PageResponse<TravelActivity> getTravelActivitiesByCity(UUID cityId, String keyword, int pageNumber, int pageSize, String sortField) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).descending());
+        return new PageResponse<>(travelActivityRepository.findPageTravelActivitiesByCity(cityId, keyword, pageable));
     }
 
     @Override

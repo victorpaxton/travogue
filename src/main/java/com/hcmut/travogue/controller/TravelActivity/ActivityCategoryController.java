@@ -85,4 +85,30 @@ public class ActivityCategoryController {
                 .errors(null)
                 .build();
     }
+
+    @GetMapping("/{id}/popular-activities")
+    @Operation(summary = "Get top 10 popular travel activities of a category")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> getPopularTravelActivitiesByCategory(@PathVariable("id") UUID categoryId) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(activityCategoryService.getPopularTravelActivitiesByCategory(categoryId))
+                .errors(null)
+                .build();
+    }
+
+    @GetMapping("/{id}/travel-activities")
+    @Operation(summary = "Get travel activities of a category (all activities of that category and its children)")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> getActivitiesByCategory(@PathVariable("id") UUID categoryId,
+                                                         @RequestParam(defaultValue = "") String keyword,
+                                                         @RequestParam(defaultValue = "0") int pageNumber,
+                                                         @RequestParam(defaultValue = "4") int pageSize,
+                                                         @RequestParam(defaultValue = "travel_point") String sortField) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(activityCategoryService.getTravelActivitiesByCategory(categoryId, keyword, pageNumber, pageSize, sortField))
+                .errors(null)
+                .build();
+    }
 }

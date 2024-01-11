@@ -1,11 +1,17 @@
 package com.hcmut.travogue.service.impl;
 
+import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.TravelActivity.CategoryCreateDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityCategory;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.repository.TravelActivity.ActivityCategoryRepository;
+import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.service.IActivityCategoryService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +25,9 @@ public class ActivityCategoryService implements IActivityCategoryService {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @Autowired
+    private TravelActivityRepository travelActivityRepository;
 
     @Override
     public List<ActivityCategory> getTopActivityCategories() {
@@ -55,5 +64,19 @@ public class ActivityCategoryService implements IActivityCategoryService {
     @Override
     public void deleteCategory(UUID categoryId) {
         activityCategoryRepository.deleteById(categoryId);
+    }
+
+    @Override
+    public List<TravelActivity> getPopularTravelActivitiesByCategory(UUID categoryId) {
+        return travelActivityRepository.findFirst10ByActivityCategory_IdOrderByTravelPointDesc(categoryId);
+    }
+
+    @Override
+    public PageResponse<TravelActivity> getTravelActivitiesByCategory(UUID categoryId, String keyword, int pageNumber, int pageSize, String sortField) {
+        List<UUID> allChildCategories = activityCategoryRepository.findChildCategoryIds(categoryId);
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).descending());
+
+        return new PageResponse<>(travelActivityRepository.findPageTravelActivitiesByCategories(allChildCategories, keyword, pageable));
     }
 }
