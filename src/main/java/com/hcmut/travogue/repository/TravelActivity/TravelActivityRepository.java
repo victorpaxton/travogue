@@ -28,4 +28,6 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
             "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personalOptions, ' ', t.generalPrice) " +
             "ILIKE %:keyword%", nativeQuery = true)
     Page<TravelActivity> findPageTravelActivitiesByCity(@Param("cityId") UUID cityId, @Param("keyword") String keyword, Pageable pageable);
+
+    Page<TravelActivity> findByHost_Id(UUID hostId, Pageable pageable);
 }

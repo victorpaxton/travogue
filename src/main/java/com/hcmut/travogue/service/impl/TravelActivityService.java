@@ -2,7 +2,6 @@ package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
-import com.hcmut.travogue.model.entity.TravelActivity.ActivityCategory;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
@@ -17,6 +16,7 @@ import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.ITravelActivityService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -109,10 +109,10 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public List<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField) {
+    public Page<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).descending());
 
-        return hostRepository.findById(hostId, pageable).orElseThrow().getTravelActivities();
+        return travelActivityRepository.findByHost_Id(hostId, pageable);
     }
 
     @Override

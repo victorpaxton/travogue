@@ -5,8 +5,8 @@ import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
+import org.springframework.data.domain.Page;
 
-import javax.management.loading.PrivateClassLoader;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -31,7 +31,7 @@ public interface ITravelActivityService {
     public TravelActivity createExperience(Principal principal, ActivityCreateDTO activityCreateDTO);
 
     // Retrieve activities hosted by a specific user
-    public List<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);
+    public Page<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);
 
     // Delete a travel activity by its ID
     public void deleteActivity(UUID activityId);
