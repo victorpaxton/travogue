@@ -1,10 +1,13 @@
 package com.hcmut.travogue.model.entity.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -43,4 +46,8 @@ public class User extends BaseEntity {
 
     @Column(name = "is_enabled")
     protected boolean isEnabled;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<ActivityComment> activityComments;
 }

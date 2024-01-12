@@ -1,6 +1,8 @@
 package com.hcmut.travogue.model.entity.TravelActivity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.User.Host;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,6 +24,9 @@ public class TravelActivity extends BaseEntity {
 
     @Column(name = "activity_name")
     private String activityName;
+
+    @Column(columnDefinition = "text")
+    private String description;
 
     @Column(columnDefinition = "text")
     private String tags;
@@ -57,5 +62,13 @@ public class TravelActivity extends BaseEntity {
 
     @OneToMany(mappedBy = "activity", cascade = CascadeType.ALL)
     private List<ActivityDate> activityDates;
+
+    @ManyToOne
+    @JoinColumn(name = "host_id", referencedColumnName = "id")
+    private Host host;
+
+    @OneToMany(mappedBy = "travelActivity")
+    @JsonIgnore
+    private List<ActivityComment> activityComments;
 
 }

@@ -1,9 +1,14 @@
 package com.hcmut.travogue.model.entity.User;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.*;
+
+import java.util.List;
 
 @Data
 @Entity
@@ -20,4 +25,8 @@ public class Host extends User {
 
     @Column(name = "average_rating")
     private Double averageRating;
+
+    @OneToMany(mappedBy = "host")
+    @JsonIgnore
+    private List<TravelActivity> travelActivities;
 }

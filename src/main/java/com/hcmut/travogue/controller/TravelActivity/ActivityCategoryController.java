@@ -43,7 +43,7 @@ public class ActivityCategoryController {
 
     @PostMapping
     @Operation(summary = "Add a category")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseModel<Object> addCategory(@RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
         return ResponseModel.builder()
                 .isSuccess(true)
@@ -54,7 +54,7 @@ public class ActivityCategoryController {
 
     @PostMapping("/{id}")
     @Operation(summary = "Add a child category")
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.CREATED)
     public ResponseModel<Object> addChildCategory(@PathVariable("id") UUID parentId, @RequestBody @Valid CategoryCreateDTO categoryCreateDTO) {
         return ResponseModel.builder()
                 .isSuccess(true)
