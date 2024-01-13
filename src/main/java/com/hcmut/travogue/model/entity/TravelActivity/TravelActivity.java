@@ -71,4 +71,8 @@ public class TravelActivity extends BaseEntity {
     @JsonIgnore
     private List<ActivityComment> activityComments;
 
+    @OneToMany(mappedBy = "travelActivity")
+    @JsonIgnore
+    private List<Promotion> promotions;
+
 }
