@@ -21,6 +21,8 @@ public interface ActivityCategoryRepository extends JpaRepository<ActivityCatego
             "    SELECT ac.id, ac.parent_id\n" +
             "    FROM activity_category ac\n" +
             "    JOIN category_tree ct ON ac.parent_id = ct.id\n" +
-            ")", nativeQuery = true)
+            ")\n" +
+            "SELECT id\n" +
+            "FROM category_tree;", nativeQuery = true)
     List<UUID> findChildCategoryIds(@Param("categoryId") UUID categoryId);
 }
