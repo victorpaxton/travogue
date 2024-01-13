@@ -24,10 +24,12 @@ public class ActivityTimeFrame extends BaseEntity {
     private UUID id;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date start;
+    @Column(name = "start_at")
+    private Date startAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date end;
+    @Column(name = "end_at")
+    private Date endAt;
 
     @Column(name = "maximum_guests")
     private int maximumGuests;

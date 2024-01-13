@@ -9,10 +9,10 @@ import java.util.Date;
 @Data
 public class ActivityTimeFrameDTO {
     @Temporal(TemporalType.TIMESTAMP)
-    private Date start;
+    private Date startAt;
 
     @Temporal(TemporalType.TIMESTAMP)
-    private Date end;
+    private Date endAt;
 
     private int maximumGuests;
 
