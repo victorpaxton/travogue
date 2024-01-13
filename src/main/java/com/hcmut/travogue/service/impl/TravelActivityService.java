@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -193,7 +194,10 @@ public class TravelActivityService implements ITravelActivityService {
     public TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException {
         TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
         String cur = activity.getImages();
-        activity.setMainImage(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
+        if (Objects.equals(cur, ""))
+            activity.setImages(cloudinaryService.uploadFile("travel_activity", image));
+        else
+            activity.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
         return travelActivityRepository.save(activity);
     }
 }
