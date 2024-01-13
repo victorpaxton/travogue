@@ -1,8 +1,10 @@
 package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.Response.PageResponse;
+import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IUserService;
 import org.modelmapper.ModelMapper;
@@ -36,7 +38,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public List<Ticket> getTicketsByUser(UUID userId) {
-        return userRepository.findById(userId).orElseThrow().getTickets();
+    public List<TicketResponseDTO> getTicketsByUser(UUID userId) {
+        return userRepository.findById(userId).orElseThrow().getTickets()
+                .stream().map(ticket -> {
+                    TravelActivity activity = ticket.getActivityTimeFrame().getActivityDate().getActivity();
+                    return TicketResponseDTO.builder()
+                            .activity(activity)
+                            .ticket(ticket)
+                            .build();
+                }).toList();
     }
 }

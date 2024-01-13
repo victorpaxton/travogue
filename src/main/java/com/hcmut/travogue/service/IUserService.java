@@ -1,6 +1,7 @@
 package com.hcmut.travogue.service;
 
 import com.hcmut.travogue.model.dto.Response.PageResponse;
+import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 
@@ -12,5 +13,6 @@ public interface IUserService {
 
     public PageResponse<UserProfileDTO> getUsers(String keyword, int pageNumber, int pageSize, String sortField);
 
-    public List<Ticket> getTicketsByUser(UUID userId);
+    public List<TicketResponseDTO> getTicketsByUser(UUID userId);
+
 }
