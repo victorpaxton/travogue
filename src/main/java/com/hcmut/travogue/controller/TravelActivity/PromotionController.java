@@ -40,7 +40,7 @@ public class PromotionController {
                 .build();
     }
 
-    @PostMapping
+    @PostMapping("/validation")
     @Operation(summary = "Check a discount code")
     @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> checkValidDiscountCode(@RequestParam UUID activityId,
