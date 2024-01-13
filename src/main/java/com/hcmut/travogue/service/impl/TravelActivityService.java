@@ -70,12 +70,17 @@ public class TravelActivityService implements ITravelActivityService {
     public ActivityComment comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
+        TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+
         ActivityComment newComment = ActivityComment.builder()
                 .rating(activityCommentDTO.getRating())
                 .comment(activityCommentDTO.getComment())
                 .user(user)
-                .travelActivity(travelActivityRepository.findById(activityId).orElseThrow())
+                .travelActivity(activity)
                 .build();
+
+        activity.setAverageRating(travelActivityRepository.calcAvgRating(activityId, activityCommentDTO.getRating()));
+        travelActivityRepository.save(activity);
 
         return activityCommentRepository.save(newComment);
     }
