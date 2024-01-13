@@ -5,6 +5,7 @@ import com.hcmut.travogue.model.entity.Ticket.PaymentInfo;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.Ticket.TicketStatus;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.Host;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
@@ -53,7 +54,10 @@ public class TicketService implements ITicketService {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
         newTicket.setUser(user);
 
-        newTicket.setActivityTimeFrame(activityTimeFrameRepository.findById(activityTimeFrameId).orElseThrow());
+        ActivityTimeFrame activityTimeFrame = activityTimeFrameRepository.findById(activityTimeFrameId).orElseThrow();
+        newTicket.setActivityTimeFrame(activityTimeFrame);
+        activityTimeFrame.setNumOfRegisteredGuests(activityTimeFrame.getNumOfRegisteredGuests() + 1);
+        activityTimeFrameRepository.save(activityTimeFrame);
 
         return ticketRepository.save(newTicket);
     }
