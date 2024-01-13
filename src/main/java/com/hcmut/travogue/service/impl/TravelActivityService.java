@@ -1,10 +1,7 @@
 package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.file.CloudinaryService;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.*;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
@@ -32,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class TravelActivityService implements ITravelActivityService {
@@ -77,7 +75,7 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public ActivityComment comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO) {
+    public CommentResponseDTO comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
@@ -89,10 +87,15 @@ public class TravelActivityService implements ITravelActivityService {
                 .travelActivity(activity)
                 .build();
 
-        activity.setAverageRating(travelActivityRepository.calcAvgRating(activityId, activityCommentDTO.getRating()));
+        double newRating = travelActivityRepository.calcAvgRating(activityId, activityCommentDTO.getRating());
+
+        activity.setAverageRating(newRating);
         travelActivityRepository.save(activity);
 
-        return activityCommentRepository.save(newComment);
+        return CommentResponseDTO.builder()
+                .newAvgRating(newRating)
+                .activityComment(activityCommentRepository.save(newComment))
+                .build();
     }
 
     @Override
@@ -101,12 +104,12 @@ public class TravelActivityService implements ITravelActivityService {
 
         List<ActivityComment> comments = activityCommentRepository.findByTravelActivityIdOrderByCreatedAtDesc(activityId);
 
-        comments.forEach(activityComment -> {
-            if (activityComment.getUser().getId().equals(user.getId())) {
-                comments.remove(activityComment);
-                comments.add(0, activityComment);
-            }
-        });
+        List<ActivityComment> matchingComments = comments.stream()
+                .filter(comment -> comment.getUser().getId().equals(user.getId()))
+                .toList();
+
+        comments.removeAll(matchingComments);
+        comments.addAll(0, matchingComments);
 
         return comments;
     }

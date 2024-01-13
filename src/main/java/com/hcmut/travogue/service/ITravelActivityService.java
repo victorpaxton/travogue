@@ -1,9 +1,6 @@
 package com.hcmut.travogue.service;
 
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.*;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
@@ -25,7 +22,7 @@ public interface ITravelActivityService {
     public TravelActivity getTravelActivity(UUID activityId);
 
     // Add a comment and rating to an activity
-    public ActivityComment comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO);
+    public CommentResponseDTO comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO);
 
     public List<ActivityComment> getCommentsByActivity(Principal principal, UUID activityId);
 
