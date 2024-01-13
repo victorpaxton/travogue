@@ -163,7 +163,6 @@ public class TravelActivityController {
     @PostMapping(value = "/{id}/main-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Upload main image for an activity")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseModel<Object> uploadMainImage(@PathVariable("id") UUID activityId, @RequestPart MultipartFile image) throws IOException {
 
         return ResponseModel.builder()
@@ -176,7 +175,6 @@ public class TravelActivityController {
     @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Upload other images for an activity")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseModel<Object> uploadImage(@PathVariable("id") UUID activityId, @RequestPart MultipartFile image) throws IOException {
 
         return ResponseModel.builder()
