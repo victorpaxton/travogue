@@ -19,13 +19,13 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE t.activity_category_id IN (:categoryIds) " +
-            "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personalOptions, ' ', t.generalPrice) " +
+            "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personal_options, ' ', t.general_price) " +
             "ILIKE %:keyword%", nativeQuery = true)
     Page<TravelActivity> findPageTravelActivitiesByCategories(@Param("categoryIds") List<UUID> categoryIds , @Param("keyword") String keyword, Pageable pageable);
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE t.city_id = :cityId " +
-            "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personalOptions, ' ', t.generalPrice) " +
+            "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personal_options, ' ', t.general_price) " +
             "ILIKE %:keyword%", nativeQuery = true)
     Page<TravelActivity> findPageTravelActivitiesByCity(@Param("cityId") UUID cityId, @Param("keyword") String keyword, Pageable pageable);
 
