@@ -77,10 +77,10 @@ public class TravelActivityController {
     @PostMapping
     @Operation(summary = "Create a travel activity")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseModel<Object> createActivity(@RequestParam UUID categoryId, @RequestBody ActivityCreateDTO activityCreateDTO) {
+    public ResponseModel<Object> createActivity(@RequestParam UUID categoryId, @RequestParam UUID cityId, @RequestBody ActivityCreateDTO activityCreateDTO) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.createActivity(categoryId, activityCreateDTO))
+                .data(travelActivityService.createActivity(categoryId, cityId, activityCreateDTO))
                 .errors(null)
                 .build();
     }
@@ -88,10 +88,13 @@ public class TravelActivityController {
     @PostMapping("/experiences")
     @Operation(summary = "Host creates a travel experience")
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseModel<Object> createExperience(Principal principal, @RequestBody ActivityCreateDTO activityCreateDTO) {
+    public ResponseModel<Object> createExperience(Principal principal,
+                                                  @RequestParam UUID categoryId,
+                                                  @RequestParam UUID cityId,
+                                                  @RequestBody ActivityCreateDTO activityCreateDTO) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.createExperience(principal, activityCreateDTO))
+                .data(travelActivityService.createExperience(principal, categoryId, cityId, activityCreateDTO))
                 .errors(null)
                 .build();
     }

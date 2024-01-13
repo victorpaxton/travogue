@@ -48,6 +48,9 @@ public class TravelActivityService implements ITravelActivityService {
     private UserRepository userRepository;
 
     @Autowired
+    private CityRepository cityRepository;
+
+    @Autowired
     private ActivityCommentRepository activityCommentRepository;
 
     @Autowired
@@ -108,21 +111,29 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public TravelActivity createActivity(UUID categoryId, ActivityCreateDTO activityCreateDTO) {
+    public TravelActivity createActivity(UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO) {
         TravelActivity newActivity = modelMapper.map(activityCreateDTO, TravelActivity.class);
 
         newActivity.setActivityCategory(activityCategoryRepository.findById(categoryId).orElseThrow());
+        newActivity.setCity(cityRepository.findById(cityId).orElseThrow());
+        newActivity.setImages("");
+        newActivity.setMainImage("");
+        newActivity.setAverageRating((double) 0);
 
         return travelActivityRepository.save(newActivity);
     }
 
     @Override
-    public TravelActivity createExperience(Principal principal, ActivityCreateDTO activityCreateDTO) {
+    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId,  ActivityCreateDTO activityCreateDTO) {
         Host host = (Host) ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         TravelActivity newActivity = modelMapper.map(activityCreateDTO, TravelActivity.class);
-        newActivity.setActivityCategory(activityCategoryRepository.findById(UUID.fromString("df8762e6-e127-4e75-ac55-da372c2fcb09")).orElseThrow());
+        newActivity.setActivityCategory(activityCategoryRepository.findById(categoryId).orElseThrow());
         newActivity.setHost(host);
+        newActivity.setCity(cityRepository.findById(cityId).orElseThrow());
+        newActivity.setImages("");
+        newActivity.setMainImage("");
+        newActivity.setAverageRating((double) 0);
         return travelActivityRepository.save(newActivity);
     }
 

@@ -30,10 +30,10 @@ public interface ITravelActivityService {
     public List<ActivityComment> getCommentsByActivity(Principal principal, UUID activityId);
 
     // Create a new travel activity
-    public TravelActivity createActivity(UUID categoryId, ActivityCreateDTO activityCreateDTO);
+    public TravelActivity createActivity(UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO);
 
     // Create a new travel activity (experience)
-    public TravelActivity createExperience(Principal principal, ActivityCreateDTO activityCreateDTO);
+    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO);
 
     // Retrieve activities hosted by a specific user
     public Page<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);
