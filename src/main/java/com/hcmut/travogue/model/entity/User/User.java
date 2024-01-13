@@ -32,6 +32,7 @@ public class User extends BaseEntity {
     @Column(name = "last_name")
     protected String lastName;
 
+    @JsonIgnore
     protected String password;
 
     @Temporal(TemporalType.DATE)
@@ -44,6 +45,7 @@ public class User extends BaseEntity {
     @Column(name = "bio_intro")
     protected String bioIntro;
 
+    @JsonIgnore
     protected String roles;
 
     @Column(name = "is_enabled")
