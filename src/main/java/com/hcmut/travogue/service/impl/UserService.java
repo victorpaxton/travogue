@@ -2,6 +2,7 @@ package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
+import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IUserService;
 import org.modelmapper.ModelMapper;
@@ -11,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -31,5 +33,10 @@ public class UserService implements IUserService {
 
         return new PageResponse<>(userRepository.findPageUsers(keyword, pageable)
                 .map(user -> modelMapper.map(user, UserProfileDTO.class)));
+    }
+
+    @Override
+    public List<Ticket> getTicketsByUser(UUID userId) {
+        return userRepository.findById(userId).orElseThrow().getTickets();
     }
 }

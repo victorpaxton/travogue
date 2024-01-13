@@ -46,5 +46,17 @@ public class UserController {
     }
 
 
+    @GetMapping("/{id}/tickets")
+    @Operation(summary = "Get tickets of a user")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseModel<Object> getTicketsByUser(@PathVariable("id") UUID userId) {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(userService.getTicketsByUser(userId))
+                .errors(null)
+                .build();
+    }
 
 }

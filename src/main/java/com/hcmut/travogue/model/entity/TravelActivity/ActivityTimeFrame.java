@@ -2,10 +2,12 @@ package com.hcmut.travogue.model.entity.TravelActivity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -53,4 +55,7 @@ public class ActivityTimeFrame extends BaseEntity {
     @JsonIgnore
     private ActivityDate activityDate;
 
+    @OneToMany(mappedBy = "activityTimeFrame")
+    @JsonIgnore
+    private List<Ticket> tickets;
 }
