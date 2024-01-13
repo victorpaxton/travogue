@@ -10,8 +10,12 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -149,6 +153,32 @@ public class TravelActivityController {
         return ResponseModel.builder()
                 .isSuccess(true)
                 .data(travelActivityService.addActivityTimeFrame(activityDateId, activityTimeFrameDTO))
+                .errors(null)
+                .build();
+    }
+
+    @PostMapping(value = "/{id}/main-image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload main image for an activity")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseModel<Object> uploadMainImage(@PathVariable("id") UUID activityId, @RequestPart MultipartFile image) throws IOException {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(travelActivityService.uploadMainImage(activityId, image))
+                .errors(null)
+                .build();
+    }
+
+    @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload other images for an activity")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseModel<Object> uploadImage(@PathVariable("id") UUID activityId, @RequestPart MultipartFile image) throws IOException {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(travelActivityService.uploadImage(activityId, image))
                 .errors(null)
                 .build();
     }

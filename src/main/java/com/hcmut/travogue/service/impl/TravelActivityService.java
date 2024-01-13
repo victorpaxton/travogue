@@ -1,5 +1,6 @@
 package com.hcmut.travogue.service.impl;
 
+import com.hcmut.travogue.file.CloudinaryService;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
@@ -23,7 +24,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -52,6 +55,9 @@ public class TravelActivityService implements ITravelActivityService {
 
     @Autowired
     private ActivityTimeFrameRepository activityTimeFrameRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -162,5 +168,21 @@ public class TravelActivityService implements ITravelActivityService {
         activityTimeFrame.setActivityDate(activityDateRepository.findById(activityDateId).orElseThrow());
 
         return activityTimeFrameRepository.save(activityTimeFrame);
+    }
+
+    @Override
+    public TravelActivity uploadMainImage(UUID activityId, MultipartFile image) throws IOException {
+        TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+
+        activity.setMainImage(cloudinaryService.uploadFile("travel_activity", image));
+        return travelActivityRepository.save(activity);
+    }
+
+    @Override
+    public TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException {
+        TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+        String cur = activity.getImages();
+        activity.setMainImage(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
+        return travelActivityRepository.save(activity);
     }
 }

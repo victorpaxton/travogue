@@ -9,7 +9,9 @@ import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import org.springframework.data.domain.Page;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
@@ -48,4 +50,8 @@ public interface ITravelActivityService {
     ActivityDate addActivityDate(UUID activityId, ActivityDateDTO activityDateDTO);
 
     ActivityTimeFrame addActivityTimeFrame(UUID activityDateId, ActivityTimeFrameDTO activityTimeFrameDTO);
+
+    TravelActivity uploadMainImage(UUID activityId, MultipartFile image) throws IOException;
+
+    TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException;
 }
