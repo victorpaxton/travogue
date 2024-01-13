@@ -2,7 +2,10 @@ package com.hcmut.travogue.service;
 
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
+import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import org.springframework.data.domain.Page;
@@ -42,4 +45,7 @@ public interface ITravelActivityService {
     // Retrieve the schedule for a host on a given date
     public List<ActivityTimeFrame> getScheduleForHost(UUID hostId, Date date);
 
+    ActivityDate addActivityDate(UUID activityId, ActivityDateDTO activityDateDTO);
+
+    ActivityTimeFrame addActivityTimeFrame(UUID activityDateId, ActivityTimeFrameDTO activityTimeFrameDTO);
 }

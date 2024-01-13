@@ -3,6 +3,8 @@ package com.hcmut.travogue.controller.TravelActivity;
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
 import com.hcmut.travogue.service.ITravelActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -127,5 +129,27 @@ public class TravelActivityController {
                 .errors(null)
                 .build();
 
+    }
+
+    @PostMapping("/experiences/{id}")
+    @Operation(summary = "Add activity date")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseModel<Object> addActivityDate(@PathVariable("id") UUID activityId, @RequestBody ActivityDateDTO activityDateDTO) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(travelActivityService.addActivityDate(activityId, activityDateDTO))
+                .errors(null)
+                .build();
+    }
+
+    @PostMapping("/experiences/activity-dates/{id}")
+    @Operation(summary = "Add time frame for an activity date")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseModel<Object> addActivityTimeFrame(@PathVariable("id") UUID activityDateId, @RequestBody ActivityTimeFrameDTO activityTimeFrameDTO) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(travelActivityService.addActivityTimeFrame(activityDateId, activityTimeFrameDTO))
+                .errors(null)
+                .build();
     }
 }

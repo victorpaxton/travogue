@@ -2,16 +2,17 @@ package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
 import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
+import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.Host;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.repository.HostRepository;
-import com.hcmut.travogue.repository.TravelActivity.ActivityCategoryRepository;
-import com.hcmut.travogue.repository.TravelActivity.ActivityCommentRepository;
-import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
+import com.hcmut.travogue.repository.TravelActivity.*;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.ITravelActivityService;
 import org.modelmapper.ModelMapper;
@@ -45,6 +46,12 @@ public class TravelActivityService implements ITravelActivityService {
 
     @Autowired
     private ActivityCommentRepository activityCommentRepository;
+
+    @Autowired
+    private ActivityDateRepository activityDateRepository;
+
+    @Autowired
+    private ActivityTimeFrameRepository activityTimeFrameRepository;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -134,5 +141,21 @@ public class TravelActivityService implements ITravelActivityService {
     @Override
     public List<ActivityTimeFrame> getScheduleForHost(UUID hostId, Date date) {
         return null;
+    }
+
+    @Override
+    public ActivityDate addActivityDate(UUID activityId, ActivityDateDTO activityDateDTO) {
+        ActivityDate newActivityDate = modelMapper.map(activityDateDTO, ActivityDate.class);
+        newActivityDate.setActivity(travelActivityRepository.findById(activityId).orElseThrow());
+        return activityDateRepository.save(newActivityDate);
+    }
+
+    @Override
+    public ActivityTimeFrame addActivityTimeFrame(UUID activityDateId, ActivityTimeFrameDTO activityTimeFrameDTO) {
+        ActivityTimeFrame activityTimeFrame = modelMapper.map(activityTimeFrameDTO, ActivityTimeFrame.class);
+        activityTimeFrame.setNumOfRegisteredGuests(0);
+        activityTimeFrame.setActivityDate(activityDateRepository.findById(activityDateId).orElseThrow());
+
+        return activityTimeFrameRepository.save(activityTimeFrame);
     }
 }
