@@ -68,7 +68,9 @@ public class ActivityCategoryService implements IActivityCategoryService {
 
     @Override
     public List<TravelActivity> getPopularTravelActivitiesByCategory(UUID categoryId) {
-        return travelActivityRepository.findFirst10ByActivityCategory_IdOrderByTravelPointDesc(categoryId);
+        List<UUID> allChildCategories = activityCategoryRepository.findChildCategoryIds(categoryId);
+
+        return travelActivityRepository.findFirst10ByActivityCategory_IdOrderByTravelPointDesc(allChildCategories);
     }
 
     @Override

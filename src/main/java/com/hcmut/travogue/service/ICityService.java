@@ -3,7 +3,9 @@ package com.hcmut.travogue.service;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.entity.TravelActivity.City;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +17,8 @@ public interface ICityService {
 
     // Retrieve activities for a given city
     public PageResponse<TravelActivity> getTravelActivitiesByCity(UUID cityId, String keyword, int pageNumber, int pageSize, String sortField);
+
+    public City uploadMainImage(UUID cityId, MultipartFile image) throws IOException;
 
     public void dumpData();
 }
