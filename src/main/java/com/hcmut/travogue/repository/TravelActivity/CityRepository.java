@@ -14,7 +14,7 @@ import java.util.UUID;
 @Repository
 public interface CityRepository extends JpaRepository<City, UUID> {
 
-    List<City> findFirst10ByOrderByTravelPointDesc();
+    List<City> findFirst8ByOrderByTravelPointDesc();
 
     @Query(value = "SELECT * FROM city AS c " +
             "WHERE CONCAT(c.name, ' ', c.description, ' ', c.city_tags, ' ', c.country) " +
