@@ -17,7 +17,7 @@ public interface CityRepository extends JpaRepository<City, UUID> {
     List<City> findFirst8ByOrderByTravelPointDesc();
 
     @Query(value = "SELECT * FROM city AS c " +
-            "WHERE CONCAT(c.name, ' ', c.description, ' ', c.city_tags, ' ', c.country) " +
+            "WHERE c.name " +
             "ILIKE %:keyword%", nativeQuery = true)
     Page<City> findPageCities(@Param("keyword") String keyword, Pageable pageable);
 }
