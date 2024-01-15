@@ -5,8 +5,11 @@ import com.hcmut.travogue.service.ICityService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.UUID;
 
 @RestController
@@ -83,5 +86,17 @@ public class CityController {
                 .errors(null)
                 .build();
 
+    }
+
+    @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Upload image for a city")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> uploadMainImage(@PathVariable("id") UUID cityId, @RequestPart MultipartFile image) throws IOException {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(cityService.uploadMainImage(cityId, image))
+                .errors(null)
+                .build();
     }
 }
