@@ -47,11 +47,9 @@ public class CustomExceptionHandler {
         return new ErrorDTO("400", ex.getMessage());
     }
 
-    @ExceptionHandler({
-            MethodArgumentNotValidException.class,
-    })
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO handlerRequestException(MethodArgumentNotValidException ex) {
+    public ErrorDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         return new ErrorDTO("400", ex.getFieldError().getDefaultMessage());
     }
 
