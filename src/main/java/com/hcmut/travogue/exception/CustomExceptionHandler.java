@@ -40,7 +40,6 @@ public class CustomExceptionHandler {
     @ExceptionHandler({
             BadRequestException.class,
             BindException.class,
-            MethodArgumentNotValidException.class,
             MethodArgumentTypeMismatchException.class,
             MissingServletRequestParameterException.class,
     })
