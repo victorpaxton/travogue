@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 @RestControllerAdvice
@@ -49,8 +51,17 @@ public class CustomExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ErrorDTO handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        return new ErrorDTO("400", ex.getFieldError().getDefaultMessage());
+    public List<ErrorDTO> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+
+        List<ErrorDTO> errors = new ArrayList<>();
+
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> {
+                    ErrorDTO errorDTO = new ErrorDTO(error.getField(), error.getDefaultMessage());
+                    errors.add(errorDTO);
+                });
+
+        return errors;
     }
 
     @ExceptionHandler({AuthenticationException.class})
