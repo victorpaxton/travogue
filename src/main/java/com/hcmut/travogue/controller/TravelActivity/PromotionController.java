@@ -45,11 +45,10 @@ public class PromotionController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> checkValidDiscountCode(@RequestParam UUID activityId,
                                                         @RequestParam String discountCode) {
-        promotionService.checkValidDiscountCode(activityId, discountCode);
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data("Valid discount code")
+                .data(promotionService.checkValidDiscountCode(activityId, discountCode))
                 .errors(null)
                 .build();
 

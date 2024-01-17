@@ -40,7 +40,7 @@ public class PromotionService implements IPromotionService {
     }
 
     @Override
-    public void checkValidDiscountCode(UUID activityId, String discountCode) {
+    public String checkValidDiscountCode(UUID activityId, String discountCode) {
         Promotion promotion = promotionRepository.findByDiscountCodeAndTravelActivityId(discountCode, activityId)
                 .orElseThrow(() -> new BadRequestException("Invalid discount code"));
 
@@ -48,5 +48,7 @@ public class PromotionService implements IPromotionService {
 
         if (!isNotExpire)
             throw new BadRequestException("Expired discount code");
+
+        return promotion.getDiscountRate();
     }
 }

@@ -12,6 +12,6 @@ public interface IPromotionService {
 
     public List<Promotion> getPromotionsByActivity(UUID activityId);
 
-    public void checkValidDiscountCode(UUID activityId, String discountCode);
+    public String checkValidDiscountCode(UUID activityId, String discountCode);
 
 }
