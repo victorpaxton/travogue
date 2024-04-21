@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class ActivityCommentDTO {
-    double rating;
+    int rating;
 
     @NotEmpty(message = "Please write a comment")
     String comment;

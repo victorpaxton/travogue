@@ -20,7 +20,7 @@ public class ActivityComment extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    private double rating;
+    private int rating;
     private String comment;
 
     @ManyToOne
