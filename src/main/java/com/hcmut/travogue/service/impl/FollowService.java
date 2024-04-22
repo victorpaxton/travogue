@@ -1,14 +1,17 @@
 package com.hcmut.travogue.service.impl;
 
+import com.hcmut.travogue.model.dto.User.UserProfileDTO;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.model.entity.User.UserFollow;
 import com.hcmut.travogue.repository.UserFollowRepository;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IFollowService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,6 +24,10 @@ public class FollowService implements IFollowService {
 
     @Autowired
     private UserFollowRepository userFollowRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
+
     @Override
     public void followUser(Principal principal, UUID toId) {
         User from = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
@@ -46,16 +53,20 @@ public class FollowService implements IFollowService {
     }
 
     @Override
-    public List<User> getFollowers(Principal principal) {
+    public List<UserProfileDTO> getFollowers(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return user.getFollowers().stream().map(UserFollow::getFrom).toList();
+        return user.getFollowers().stream().map(userFollow ->
+                modelMapper.map(userFollow.getFrom(), UserProfileDTO.class)
+                ).toList();
     }
 
     @Override
-    public List<User> getFollowing(Principal principal) {
+    public List<UserProfileDTO> getFollowing(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return user.getFollowing().stream().map(UserFollow::getTo).toList();
+        return user.getFollowers().stream().map(userFollow ->
+                modelMapper.map(userFollow.getTo(), UserProfileDTO.class)
+        ).toList();
     }
 }

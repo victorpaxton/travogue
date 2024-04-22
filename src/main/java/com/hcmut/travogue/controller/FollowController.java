@@ -59,7 +59,7 @@ public class FollowController {
     }
 
     @GetMapping("/following")
-    @Operation(summary = "Get followers list")
+    @Operation(summary = "Get following list")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getFollowing(Principal principal) {
