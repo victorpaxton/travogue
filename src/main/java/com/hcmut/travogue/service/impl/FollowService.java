@@ -56,8 +56,9 @@ public class FollowService implements IFollowService {
     public List<UserProfileDTO> getFollowers(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return user.getFollowers().stream().map(userFollow ->
-                modelMapper.map(userFollow.getFrom(), UserProfileDTO.class)
+        return userFollowRepository.findAllByTo_Id(user.getId())
+                .stream().map(userFollow ->
+                        modelMapper.map(userFollow.getFrom(), UserProfileDTO.class)
                 ).toList();
     }
 
@@ -65,8 +66,9 @@ public class FollowService implements IFollowService {
     public List<UserProfileDTO> getFollowing(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return user.getFollowers().stream().map(userFollow ->
-                modelMapper.map(userFollow.getTo(), UserProfileDTO.class)
-        ).toList();
+        return userFollowRepository.findAllByFrom_Id(user.getId())
+                .stream().map(userFollow ->
+                        modelMapper.map(userFollow.getTo(), UserProfileDTO.class)
+                ).toList();
     }
 }
