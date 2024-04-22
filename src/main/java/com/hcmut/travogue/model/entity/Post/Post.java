@@ -2,6 +2,7 @@ package com.hcmut.travogue.model.entity.Post;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,4 +39,8 @@ public class Post extends BaseEntity {
     @OneToMany(mappedBy = "post")
     @JsonIgnore
     private List<PostLike> postLikes;
+
+    @ManyToOne
+    @JoinColumn(name = "activity_id", referencedColumnName = "id")
+    private TravelActivity travelActivity;
 }
