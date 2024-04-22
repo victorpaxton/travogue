@@ -2,9 +2,11 @@ package com.hcmut.travogue.model.entity.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.Post.Post;
+import com.hcmut.travogue.model.entity.Post.PostComment;
+import com.hcmut.travogue.model.entity.Post.PostLike;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
-import com.sun.mail.imap.IMAPNestedMessage;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -57,5 +59,17 @@ public class User extends BaseEntity {
 
     @OneToMany(mappedBy = "user")
     @JsonIgnore
+    protected List<PostComment> postComments;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<PostLike> postLikes;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
     protected List<Ticket> tickets;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<Post> posts;
 }
