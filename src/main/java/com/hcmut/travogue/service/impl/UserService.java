@@ -3,7 +3,6 @@ package com.hcmut.travogue.service.impl;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
-import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IUserService;
@@ -48,4 +47,5 @@ public class UserService implements IUserService {
                             .build();
                 }).toList();
     }
+
 }

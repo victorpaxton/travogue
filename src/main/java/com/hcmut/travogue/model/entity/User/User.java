@@ -72,4 +72,12 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     protected List<Post> posts;
+
+    @OneToMany(mappedBy = "to")
+    @JsonIgnore
+    protected List<UserFollow> followers;
+
+    @OneToMany(mappedBy = "from")
+    @JsonIgnore
+    protected List<UserFollow> following;
 }
