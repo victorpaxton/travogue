@@ -64,7 +64,7 @@ public class PostController {
 
     @GetMapping
     @Operation(summary = "Get posts by user")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getPostsByUser(@RequestParam UUID userId) {
 
@@ -77,7 +77,7 @@ public class PostController {
 
     @GetMapping("/{id}/comments")
     @Operation(summary = "Get comments by post")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getCommentsByPost(@PathVariable("id") UUID postId) {
 
@@ -90,7 +90,7 @@ public class PostController {
 
     @GetMapping("/{id}/likes")
     @Operation(summary = "Get likes by post")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getLikesByPost(@PathVariable("id") UUID postId) {
 
