@@ -47,7 +47,7 @@ public class FollowController {
 
     @GetMapping("/followers")
     @Operation(summary = "Get followers list")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getFollowers(Principal principal) {
 
@@ -60,7 +60,7 @@ public class FollowController {
 
     @GetMapping("/following")
     @Operation(summary = "Get following list")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> getFollowing(Principal principal) {
 
