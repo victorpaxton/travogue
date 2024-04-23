@@ -35,8 +35,8 @@ public class UserService implements IUserService {
 
     public UserProfileDTO getUser(UUID userId) {
         UserProfileDTO res = modelMapper.map(userRepository.findById(userId), UserProfileDTO.class);
-        res.setFollowers(userFollowRepository.countAllByTo_Id(userId));
-        res.setFollowing(userFollowRepository.countAllByFrom_Id(userId));
+        res.setNumOfFollowers(userFollowRepository.countAllByTo_Id(userId));
+        res.setNumOfFollowing(userFollowRepository.countAllByFrom_Id(userId));
         res.setNumOfPosts(postRepository.countAllByUser_Id(userId));
         return res;
     }

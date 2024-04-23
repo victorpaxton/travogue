@@ -25,8 +25,8 @@ public class UserProfileDTO {
     private boolean isEnabled;
 
     private int numOfPosts;
-    private int followers;
-    private int following;
+    private int numOfFollowers;
+    private int numOfFollowing;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
