@@ -95,6 +95,8 @@ public class PostService implements IPostService {
                     PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
                     p.setNumOfComments(post.getPostComments().size());
                     p.setNumOfLikes(post.getPostLikes().size());
+                    p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(userId, post.getId()));
+                    p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
                     return p;
                 }).toList();
     }

@@ -1,5 +1,6 @@
 package com.hcmut.travogue.model.dto.Post;
 
+import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.User;
 import jakarta.persistence.Temporal;
@@ -18,6 +19,8 @@ public class PostResponseDTO {
     private int numOfComments;
     private int numOfLikes;
     private TravelActivity travelActivity;
+    private boolean isLiked;
+    private PostComment latestComment;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
     @Temporal(TemporalType.TIMESTAMP)
