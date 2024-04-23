@@ -126,4 +126,17 @@ public class PostController {
                 .errors(null)
                 .build();
     }
+
+    @DeleteMapping("/{id}/likes")
+    @Operation(summary = "Unlike a post")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
+    public ResponseModel<Object> unLike(Principal principal, @PathVariable("id") UUID postId) {
+        postService.unLike(principal, postId);
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data("Deleted")
+                .errors(null)
+                .build();
+    }
 }

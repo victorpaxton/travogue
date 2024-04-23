@@ -141,6 +141,17 @@ public class PostService implements IPostService {
     }
 
     @Override
+    public void unLike(Principal principal, UUID postId) {
+        User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
+        Post post = postRepository.findById(postId).orElseThrow();
+
+        PostLike postLike = postLikeRepository.findByUser_IdAndPost_Id(user.getId(), post.getId())
+                .orElseThrow();
+
+        postLikeRepository.delete(postLike);
+    }
+
+    @Override
     public Page<PostResponseDTO> getPostsOfFriends(Principal principal) {
         return null;
     }
