@@ -14,4 +14,8 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, UUID> {
     List<UserFollow> findAllByFrom_Id(UUID from);
 
     List<UserFollow> findAllByTo_Id(UUID to);
+
+    int countAllByFrom_Id(UUID from);
+
+    int countAllByTo_Id(UUID to);
 }

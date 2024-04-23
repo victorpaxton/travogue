@@ -24,6 +24,10 @@ public class UserProfileDTO {
     private String bioIntro;
     private boolean isEnabled;
 
+    private int numOfPosts;
+    private int followers;
+    private int following;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 

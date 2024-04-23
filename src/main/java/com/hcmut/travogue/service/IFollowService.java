@@ -1,6 +1,7 @@
 package com.hcmut.travogue.service;
 
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
+import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.User.User;
 
 import java.security.Principal;
@@ -13,7 +14,7 @@ public interface IFollowService {
 
     public void unfollowUser(Principal principal, UUID toId);
 
-    public List<UserProfileDTO> getFollowers(Principal principal);
+    public List<UserShortProfileDTO> getFollowers(Principal principal);
 
-    public List<UserProfileDTO> getFollowing(Principal principal);
+    public List<UserShortProfileDTO> getFollowing(Principal principal);
 }

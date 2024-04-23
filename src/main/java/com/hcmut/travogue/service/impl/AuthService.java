@@ -10,6 +10,8 @@ import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.repository.Auth.OTPCodeRepository;
 import com.hcmut.travogue.repository.Auth.TokenRepository;
+import com.hcmut.travogue.repository.Post.PostRepository;
+import com.hcmut.travogue.repository.UserFollowRepository;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IAuthService;
 import com.hcmut.travogue.util.EmailService;
@@ -56,6 +58,9 @@ public class AuthService implements IAuthService {
 
     @Autowired
     private JwtService jwtService;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -172,7 +177,7 @@ public class AuthService implements IAuthService {
             tokenService.addToken(refreshToken, TokenType.REFRESH, userDetails.getUserInfo());
 
             return AuthenticationResponseDTO.builder()
-                    .user(modelMapper.map(userDetails.getUserInfo(), UserProfileDTO.class))
+                    .user(userService.getUser(userDetails.getUserInfo().getId()))
                     .tokens(AuthenticationResponseDTO.TokenResponse.builder()
                             .access(new TokenDTO(accessToken, jwtService.extractExpiration(accessToken)))
                             .refresh(new TokenDTO(refreshToken, jwtService.extractExpiration(refreshToken)))

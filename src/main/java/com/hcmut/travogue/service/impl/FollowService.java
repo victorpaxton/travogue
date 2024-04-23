@@ -1,6 +1,6 @@
 package com.hcmut.travogue.service.impl;
 
-import com.hcmut.travogue.model.dto.User.UserProfileDTO;
+import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.model.entity.User.UserFollow;
@@ -11,7 +11,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
 
 import java.security.Principal;
 import java.util.List;
@@ -53,22 +52,22 @@ public class FollowService implements IFollowService {
     }
 
     @Override
-    public List<UserProfileDTO> getFollowers(Principal principal) {
+    public List<UserShortProfileDTO> getFollowers(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         return userFollowRepository.findAllByTo_Id(user.getId())
                 .stream().map(userFollow ->
-                        modelMapper.map(userFollow.getFrom(), UserProfileDTO.class)
+                        modelMapper.map(userFollow.getFrom(), UserShortProfileDTO.class)
                 ).toList();
     }
 
     @Override
-    public List<UserProfileDTO> getFollowing(Principal principal) {
+    public List<UserShortProfileDTO> getFollowing(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         return userFollowRepository.findAllByFrom_Id(user.getId())
                 .stream().map(userFollow ->
-                        modelMapper.map(userFollow.getTo(), UserProfileDTO.class)
+                        modelMapper.map(userFollow.getTo(), UserShortProfileDTO.class)
                 ).toList();
     }
 }

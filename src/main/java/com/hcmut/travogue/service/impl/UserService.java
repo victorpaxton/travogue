@@ -4,6 +4,8 @@ import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
+import com.hcmut.travogue.repository.Post.PostRepository;
+import com.hcmut.travogue.repository.UserFollowRepository;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IUserService;
 import org.modelmapper.ModelMapper;
@@ -23,10 +25,20 @@ public class UserService implements IUserService {
     private UserRepository userRepository;
 
     @Autowired
+    private UserFollowRepository userFollowRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     public UserProfileDTO getUser(UUID userId) {
-        return modelMapper.map(userRepository.findById(userId), UserProfileDTO.class);
+        UserProfileDTO res = modelMapper.map(userRepository.findById(userId), UserProfileDTO.class);
+        res.setFollowers(userFollowRepository.countAllByTo_Id(userId));
+        res.setFollowing(userFollowRepository.countAllByFrom_Id(userId));
+        res.setNumOfPosts(postRepository.countAllByUser_Id(userId));
+        return res;
     }
 
     public PageResponse<UserProfileDTO> getUsers(String keyword, int pageNumber, int pageSize, String sortField) {
