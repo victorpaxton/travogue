@@ -139,4 +139,19 @@ public class PostController {
                 .errors(null)
                 .build();
     }
+
+    @GetMapping("/feeds")
+    @Operation(summary = "Feed")
+    @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
+    public ResponseModel<Object> getPostsOfFriends(Principal principal,
+                                        @RequestParam int pageNumber,
+                                        @RequestParam int pageSize) {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(postService.getPostsOfFriends(principal, pageNumber, pageSize))
+                .errors(null)
+                .build();
+    }
 }

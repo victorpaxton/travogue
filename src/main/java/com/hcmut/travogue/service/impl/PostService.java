@@ -10,14 +10,19 @@ import com.hcmut.travogue.model.entity.Post.PostLike;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
+import com.hcmut.travogue.model.entity.User.UserFollow;
 import com.hcmut.travogue.repository.Post.PostCommentRepository;
 import com.hcmut.travogue.repository.Post.PostLikeRepository;
 import com.hcmut.travogue.repository.Post.PostRepository;
 import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
+import com.hcmut.travogue.repository.UserFollowRepository;
 import com.hcmut.travogue.service.IPostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +47,9 @@ public class PostService implements IPostService {
 
     @Autowired
     private TravelActivityRepository travelActivityRepository;
+
+    @Autowired
+    private UserFollowRepository userFollowRepository;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -152,7 +160,22 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Page<PostResponseDTO> getPostsOfFriends(Principal principal) {
-        return null;
+    public Page<PostResponseDTO> getPostsOfFriends(Principal principal, int pageNumber, int pageSize) {
+        User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
+        List<UUID> followingList = userFollowRepository.findAllByFrom_Id(user.getId())
+                .stream().map(userFollow -> userFollow.getTo().getId())
+                .toList();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("updatedAt").descending());
+
+        return postRepository.findAllByUser_Id(followingList, pageable)
+                .map(post -> {
+                    PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
+                    p.setNumOfComments(post.getPostComments().size());
+                    p.setNumOfLikes(post.getPostLikes().size());
+                    p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(user.getId(), post.getId()));
+                    p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
+                    return p;
+                });
     }
 }

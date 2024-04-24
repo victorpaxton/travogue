@@ -25,5 +25,5 @@ public interface IPostService {
     public PostComment addComment(Principal principal, UUID postId, PostCommentDTO postCommentDTO);
     public PostLike addLike(Principal principal, UUID postId);
     public void unLike(Principal principal, UUID postId);
-    public Page<PostResponseDTO> getPostsOfFriends(Principal principal);
+    public Page<PostResponseDTO> getPostsOfFriends(Principal principal, int pageNumber, int pageSize);
 }
