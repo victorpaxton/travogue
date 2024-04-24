@@ -29,6 +29,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -162,13 +163,13 @@ public class PostService implements IPostService {
     @Override
     public Page<PostResponseDTO> getPostsOfFriends(Principal principal, int pageNumber, int pageSize) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
-        List<UUID> followingList = userFollowRepository.findAllByFrom_Id(user.getId())
+        Collection<UUID> followingList = userFollowRepository.findAllByFrom_Id(user.getId())
                 .stream().map(userFollow -> userFollow.getTo().getId())
                 .toList();
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("updatedAt").descending());
 
-        return postRepository.findAllByUser_Id(followingList, pageable)
+        return postRepository.findAllByUser_IdIn(followingList, pageable)
                 .map(post -> {
                     PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
                     p.setNumOfComments(post.getPostComments().size());
