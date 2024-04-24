@@ -109,13 +109,17 @@ public class PostService implements IPostService {
     @Override
     public List<PostComment> getCommentsByPost(UUID postId) {
         Post post = postRepository.findById(postId).orElseThrow();
-        return post.getPostComments();
+        return post.getPostComments()
+                .stream().sorted((comment1, comment2) -> comment2.getUpdatedAt().compareTo(comment1.getUpdatedAt()))
+                .toList();
     }
 
     @Override
     public List<PostLike> getLikesByPost(UUID postId) {
         Post post = postRepository.findById(postId).orElseThrow();
-        return post.getPostLikes();
+        return post.getPostLikes()
+                .stream().sorted((like1, like2) -> like2.getUpdatedAt().compareTo(like1.getUpdatedAt()))
+                .toList();
     }
 
     @Override
