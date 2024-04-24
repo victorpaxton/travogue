@@ -95,7 +95,7 @@ public class PostService implements IPostService {
 
     @Override
     public List<PostResponseDTO> getPostsByUser(UUID userId) {
-        return postRepository.findAllByUser_Id(userId)
+        return postRepository.findAllByUser_IdOrderByUpdatedAtDesc(userId)
                 .stream().map(post -> {
                     PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
                     p.setNumOfComments(post.getPostComments().size());

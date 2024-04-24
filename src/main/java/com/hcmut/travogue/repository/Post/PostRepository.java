@@ -12,7 +12,7 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    List<Post> findAllByUser_Id(UUID userId);
+    List<Post> findAllByUser_IdOrderByUpdatedAtDesc(UUID userId);
 
     int countAllByUser_Id(UUID userId);
 
