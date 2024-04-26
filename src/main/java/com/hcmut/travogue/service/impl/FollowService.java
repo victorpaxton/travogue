@@ -56,8 +56,11 @@ public class FollowService implements IFollowService {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         return userFollowRepository.findAllByTo_Id(user.getId())
-                .stream().map(userFollow ->
-                        modelMapper.map(userFollow.getFrom(), UserShortProfileDTO.class)
+                .stream().map(userFollow -> {
+                    UserShortProfileDTO res = modelMapper.map(userFollow.getFrom(), UserShortProfileDTO.class);
+                    res.setFollowStatus(userFollowRepository.existsByFrom_IdAndTo_Id(user.getId(), res.getId()));
+                    return res;
+                    }
                 ).toList();
     }
 
@@ -66,8 +69,11 @@ public class FollowService implements IFollowService {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         return userFollowRepository.findAllByFrom_Id(user.getId())
-                .stream().map(userFollow ->
-                        modelMapper.map(userFollow.getTo(), UserShortProfileDTO.class)
+                .stream().map(userFollow -> {
+                            UserShortProfileDTO res = modelMapper.map(userFollow.getTo(), UserShortProfileDTO.class);
+                            res.setFollowStatus(true);
+                            return res;
+                        }
                 ).toList();
     }
 }

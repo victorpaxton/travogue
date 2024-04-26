@@ -13,4 +13,5 @@ public class UserShortProfileDTO {
     private String firstName;
     private String lastName;
     private String avatar;
+    private boolean followStatus;
 }

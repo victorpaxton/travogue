@@ -18,4 +18,6 @@ public interface UserFollowRepository extends JpaRepository<UserFollow, UUID> {
     int countAllByFrom_Id(UUID from);
 
     int countAllByTo_Id(UUID to);
+
+    boolean existsByFrom_IdAndTo_Id(UUID from, UUID to);
 }
