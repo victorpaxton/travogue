@@ -1,5 +1,6 @@
 package com.hcmut.travogue.repository.TravelActivity;
 
+import com.hcmut.travogue.model.entity.TravelActivity.City;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -41,4 +42,9 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
             "        FROM activity_comment\n" +
             "        WHERE activity_comment.travel_activity_id = :activityId", nativeQuery = true)
     Double calcAvgRating(@Param("activityId") UUID activityId, @Param("newRating") double newRating);
+
+    @Query(value = "SELECT * FROM travel_activity AS t " +
+            "WHERE t.activity_name " +
+            "ILIKE %:keyword%", nativeQuery = true)
+    Page<TravelActivity> findPageActivities(@Param("keyword") String keyword, Pageable pageable);
 }

@@ -183,4 +183,18 @@ public class TravelActivityController {
                 .errors(null)
                 .build();
     }
+
+    @GetMapping("/search")
+    @Operation(summary = "Search")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> searchActivities(@RequestParam String criteria,
+                                                     @RequestParam(defaultValue = "0") int pageNumber,
+                                                     @RequestParam(defaultValue = "4") int pageSize,
+                                                     @RequestParam(defaultValue = "updated_at") String sortField) {
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(travelActivityService.searchActivities(pageNumber, pageSize, sortField, criteria))
+                .errors(null)
+                .build();
+    }
 }

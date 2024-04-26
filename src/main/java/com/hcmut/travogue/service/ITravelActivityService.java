@@ -1,5 +1,6 @@
 package com.hcmut.travogue.service;
 
+import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.TravelActivity.*;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
@@ -51,4 +52,6 @@ public interface ITravelActivityService {
     TravelActivity uploadMainImage(UUID activityId, MultipartFile image) throws IOException;
 
     TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException;
+
+    PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria);
 }

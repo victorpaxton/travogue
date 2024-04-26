@@ -1,6 +1,7 @@
 package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.file.CloudinaryService;
+import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.TravelActivity.*;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
@@ -202,5 +203,19 @@ public class TravelActivityService implements ITravelActivityService {
         else
             activity.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
         return travelActivityRepository.save(activity);
+    }
+
+    @Override
+    public PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria) {
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
+
+        return new PageResponse<>(
+                travelActivityRepository.findPageActivities(criteria, pageable)
+                        .map(travelActivity -> {
+                            TravelActivityShortResponse res = modelMapper.map(travelActivity, TravelActivityShortResponse.class);
+                            res.setCategoryName(travelActivity.getActivityCategory().getCategoryName());
+                            return res;
+                        })
+        );
     }
 }
