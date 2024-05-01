@@ -33,4 +33,6 @@ public class UserProfileDTO {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    private boolean followStatus = false;
 }

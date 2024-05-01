@@ -14,7 +14,7 @@ public interface IFollowService {
 
     public void unfollowUser(Principal principal, UUID toId);
 
-    public List<UserShortProfileDTO> getFollowers(Principal principal);
+    public List<UserShortProfileDTO> getFollowers(Principal principal, UUID userId);
 
-    public List<UserShortProfileDTO> getFollowing(Principal principal);
+    public List<UserShortProfileDTO> getFollowing(Principal principal, UUID userId);
 }

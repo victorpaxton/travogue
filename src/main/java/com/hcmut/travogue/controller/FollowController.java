@@ -45,28 +45,28 @@ public class FollowController {
                 .build();
     }
 
-    @GetMapping("/followers")
+    @GetMapping("/{userId}/followers")
     @Operation(summary = "Get followers list")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> getFollowers(Principal principal) {
+    public ResponseModel<Object> getFollowers(Principal principal, @PathVariable("userId") UUID userId) {
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(followService.getFollowers(principal))
+                .data(followService.getFollowers(principal, userId))
                 .errors(null)
                 .build();
     }
 
-    @GetMapping("/following")
+    @GetMapping("/{userId}/following")
     @Operation(summary = "Get following list")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> getFollowing(Principal principal) {
+    public ResponseModel<Object> getFollowing(Principal principal, @PathVariable("userId") UUID userId) {
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(followService.getFollowing(principal))
+                .data(followService.getFollowing(principal, userId))
                 .errors(null)
                 .build();
     }

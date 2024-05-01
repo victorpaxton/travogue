@@ -52,10 +52,10 @@ public class FollowService implements IFollowService {
     }
 
     @Override
-    public List<UserShortProfileDTO> getFollowers(Principal principal) {
+    public List<UserShortProfileDTO> getFollowers(Principal principal, UUID userId) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return userFollowRepository.findAllByTo_Id(user.getId())
+        return userFollowRepository.findAllByTo_Id(userId)
                 .stream().map(userFollow -> {
                     UserShortProfileDTO res = modelMapper.map(userFollow.getFrom(), UserShortProfileDTO.class);
                     res.setFollowStatus(userFollowRepository.existsByFrom_IdAndTo_Id(user.getId(), res.getId()));
@@ -65,13 +65,13 @@ public class FollowService implements IFollowService {
     }
 
     @Override
-    public List<UserShortProfileDTO> getFollowing(Principal principal) {
+    public List<UserShortProfileDTO> getFollowing(Principal principal, UUID userId) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        return userFollowRepository.findAllByFrom_Id(user.getId())
+        return userFollowRepository.findAllByFrom_Id(userId)
                 .stream().map(userFollow -> {
                             UserShortProfileDTO res = modelMapper.map(userFollow.getTo(), UserShortProfileDTO.class);
-                            res.setFollowStatus(true);
+                            res.setFollowStatus(userFollowRepository.existsByFrom_IdAndTo_Id(user.getId(), res.getId()));
                             return res;
                         }
                 ).toList();
