@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -21,11 +22,11 @@ public class UserController {
     @Operation(summary = "Get a user details")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseModel<Object> getUser(@PathVariable("id") UUID userId) {
+    public ResponseModel<Object> getUser(Principal principal, @PathVariable("id") UUID userId) {
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(userService.getUser(userId))
+                .data(userService.getUser(principal, userId))
                 .errors(null)
                 .build();
     }
