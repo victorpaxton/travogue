@@ -51,6 +51,12 @@ public class AuthService implements IAuthService {
     private TokenRepository tokenRepository;
 
     @Autowired
+    private UserFollowRepository userFollowRepository;
+
+    @Autowired
+    private PostRepository postRepository;
+
+    @Autowired
     private TokenService tokenService;
 
     @Autowired
@@ -176,8 +182,13 @@ public class AuthService implements IAuthService {
 
             tokenService.addToken(refreshToken, TokenType.REFRESH, userDetails.getUserInfo());
 
+            UserProfileDTO res = modelMapper.map(userRepository.findById(userDetails.getUserInfo().getId()), UserProfileDTO.class);
+            res.setNumOfFollowers(userFollowRepository.countAllByTo_Id(userDetails.getUserInfo().getId()));
+            res.setNumOfFollowing(userFollowRepository.countAllByFrom_Id(userDetails.getUserInfo().getId()));
+            res.setNumOfPosts(postRepository.countAllByUser_Id(userDetails.getUserInfo().getId()));
+
             return AuthenticationResponseDTO.builder()
-                    .user(userService.getUser(userDetails.getUserInfo().getId()))
+                    .user(res)
                     .tokens(AuthenticationResponseDTO.TokenResponse.builder()
                             .access(new TokenDTO(accessToken, jwtService.extractExpiration(accessToken)))
                             .refresh(new TokenDTO(refreshToken, jwtService.extractExpiration(refreshToken)))
