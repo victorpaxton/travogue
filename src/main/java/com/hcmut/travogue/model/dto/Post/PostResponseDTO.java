@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Data
-@Builder
 public class PostResponseDTO {
     private UUID id;
     private String caption;
