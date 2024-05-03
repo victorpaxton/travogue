@@ -1,6 +1,5 @@
 package com.hcmut.travogue.model.dto.Post;
 
-import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.Post.PostUserTagged;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
@@ -25,7 +24,7 @@ public class PostResponseDTO {
     private int numOfLikes;
     private TravelActivity travelActivity;
     private boolean isLiked;
-    private List<PostUserTagged> taggedList;
+    private List<PostUserTagged> tags;
     private PostComment latestComment;
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;

@@ -5,7 +5,6 @@ import com.hcmut.travogue.model.dto.Post.PostCommentDTO;
 import com.hcmut.travogue.model.dto.Post.PostCreateDTO;
 import com.hcmut.travogue.model.dto.Post.PostResponseDTO;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
-import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.Post.Post;
 import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.Post.PostLike;
@@ -30,7 +29,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.management.loading.PrivateClassLoader;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -98,7 +96,7 @@ public class PostService implements IPostService {
         res.setNumOfComments(0);
         res.setLiked(false);
         res.setLatestComment(null);
-        res.setTaggedList(userTaggedList);
+        res.setTags(userTaggedList);
         return res;
     }
 
@@ -117,7 +115,7 @@ public class PostService implements IPostService {
         p.setNumOfLikes(post.getPostLikes().size());
         p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(user.getId(), post.getId()));
         p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
-        p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
+        p.setTags(postUserTaggedRepository.findByPost_Id(post.getId()));
         return p;
     }
 
@@ -130,7 +128,7 @@ public class PostService implements IPostService {
                     p.setNumOfLikes(post.getPostLikes().size());
                     p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(userId, post.getId()));
                     p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
-                    p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
+                    p.setTags(postUserTaggedRepository.findByPost_Id(post.getId()));
                     return p;
                 }).toList();
     }
@@ -207,7 +205,7 @@ public class PostService implements IPostService {
                     p.setNumOfLikes(post.getPostLikes().size());
                     p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(user.getId(), post.getId()));
                     p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
-                    p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
+                    p.setTags(postUserTaggedRepository.findByPost_Id(post.getId()));
                     return p;
                 }));
     }
