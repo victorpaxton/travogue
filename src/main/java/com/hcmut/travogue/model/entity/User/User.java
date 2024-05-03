@@ -5,6 +5,7 @@ import com.hcmut.travogue.model.entity.BaseEntity;
 import com.hcmut.travogue.model.entity.Post.Post;
 import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.Post.PostLike;
+import com.hcmut.travogue.model.entity.Post.PostUserTagged;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import jakarta.persistence.*;
@@ -80,4 +81,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "from")
     @JsonIgnore
     protected List<UserFollow> following;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<PostUserTagged> postUserTaggedList;
 }

@@ -5,17 +5,21 @@ import com.hcmut.travogue.model.dto.Post.PostCommentDTO;
 import com.hcmut.travogue.model.dto.Post.PostCreateDTO;
 import com.hcmut.travogue.model.dto.Post.PostResponseDTO;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
+import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.Post.Post;
 import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.Post.PostLike;
+import com.hcmut.travogue.model.entity.Post.PostUserTagged;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.repository.Post.PostCommentRepository;
 import com.hcmut.travogue.repository.Post.PostLikeRepository;
 import com.hcmut.travogue.repository.Post.PostRepository;
+import com.hcmut.travogue.repository.Post.PostUserTaggedRepository;
 import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.repository.UserFollowRepository;
+import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.IPostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +30,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.management.loading.PrivateClassLoader;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.*;
@@ -43,10 +48,16 @@ public class PostService implements IPostService {
     private PostLikeRepository postLikeRepository;
 
     @Autowired
+    private PostUserTaggedRepository postUserTaggedRepository;
+
+    @Autowired
     private TravelActivityRepository travelActivityRepository;
 
     @Autowired
     private UserFollowRepository userFollowRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -55,42 +66,59 @@ public class PostService implements IPostService {
     private ModelMapper modelMapper;
 
     @Override
-    public Post createPost(Principal principal, UUID activityId, PostCreateDTO postCreateDTO) {
+    public PostResponseDTO createPost(Principal principal, UUID activityId, PostCreateDTO postCreateDTO) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
-        TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+        TravelActivity activity = null;
+        if (activityId != null)
+            activity = travelActivityRepository.findById(activityId).orElseThrow();
 
-        Post newPost = Post.builder()
+        Post newPost = postRepository.save(
+                Post.builder()
                 .caption(postCreateDTO.getCaption())
                 .user(user)
                 .images("")
                 .travelActivity(activity)
-                .build();
+                .build()
+        );
 
-        return postRepository.save(newPost);
+        List<PostUserTagged> userTaggedList = new ArrayList<>();
+        postCreateDTO.getUsersTagged()
+                .forEach(userId -> {
+                    User userTagged = userRepository.findById(userId).orElseThrow();
+                    userTaggedList.add(postUserTaggedRepository.save(
+                            PostUserTagged.builder()
+                                    .user(userTagged)
+                                    .post(newPost)
+                                    .build()
+                    ));
+                });
+
+        PostResponseDTO res = modelMapper.map(newPost, PostResponseDTO.class);
+        res.setNumOfLikes(0);
+        res.setNumOfComments(0);
+        res.setLiked(false);
+        res.setLatestComment(null);
+        res.setTaggedList(userTaggedList);
+        return res;
     }
 
     @Override
-    public Post createPost(Principal principal, PostCreateDTO postCreateDTO) {
+    public PostResponseDTO addImage(Principal principal, UUID postId, MultipartFile image) throws IOException {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        Post newPost = Post.builder()
-                .caption(postCreateDTO.getCaption())
-                .user(user)
-                .images("")
-                .build();
-
-        return postRepository.save(newPost);
-    }
-
-    @Override
-    public Post addImage(UUID postId, MultipartFile image) throws IOException {
         Post post = postRepository.findById(postId).orElseThrow();
         String cur = post.getImages();
         if (Objects.equals(cur, ""))
             post.setImages(cloudinaryService.uploadFile("travel_activity", image));
         else
             post.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
-        return postRepository.save(post);
+        PostResponseDTO p = modelMapper.map(postRepository.save(post), PostResponseDTO.class);
+        p.setNumOfComments(post.getPostComments().size());
+        p.setNumOfLikes(post.getPostLikes().size());
+        p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(user.getId(), post.getId()));
+        p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
+        p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
+        return p;
     }
 
     @Override
@@ -102,6 +130,7 @@ public class PostService implements IPostService {
                     p.setNumOfLikes(post.getPostLikes().size());
                     p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(userId, post.getId()));
                     p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
+                    p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
                     return p;
                 }).toList();
     }
@@ -178,6 +207,7 @@ public class PostService implements IPostService {
                     p.setNumOfLikes(post.getPostLikes().size());
                     p.setLiked(postLikeRepository.existsByUser_IdAndPost_Id(user.getId(), post.getId()));
                     p.setLatestComment(postCommentRepository.findFirstByPost_IdOrderByUpdatedAtDesc(post.getId()).orElse(null));
+                    p.setTaggedList(postUserTaggedRepository.findByPost_Id(post.getId()));
                     return p;
                 }));
     }

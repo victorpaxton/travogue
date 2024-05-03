@@ -17,9 +17,8 @@ import java.util.UUID;
 
 public interface IPostService {
 
-    public Post createPost(Principal principal, UUID activityId, PostCreateDTO postCreateDTO);
-    public Post createPost(Principal principal, PostCreateDTO postCreateDTO);
-    public Post addImage(UUID postId, MultipartFile image) throws IOException;
+    public PostResponseDTO createPost(Principal principal, UUID activityId, PostCreateDTO postCreateDTO);
+    public PostResponseDTO addImage(Principal principal, UUID postId, MultipartFile image) throws IOException;
     public List<PostResponseDTO> getPostsByUser(UUID userId);
     public List<PostComment> getCommentsByPost(UUID postId);
     public List<PostLike> getLikesByPost(UUID postId);

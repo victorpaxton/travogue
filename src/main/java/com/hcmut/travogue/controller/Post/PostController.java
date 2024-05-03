@@ -27,7 +27,7 @@ public class PostController {
     @Operation(summary = "Create new post")
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> createPost(Principal principal, @RequestParam UUID travelActivityId, @RequestBody PostCreateDTO postCreateDTO) {
+    public ResponseModel<Object> createPost(Principal principal, @RequestParam(required = false) UUID travelActivityId, @RequestBody PostCreateDTO postCreateDTO) {
 
         return ResponseModel.builder()
                 .isSuccess(true)
@@ -36,28 +36,15 @@ public class PostController {
                 .build();
     }
 
-    @PostMapping("/v2")
-    @Operation(summary = "Create new post")
-    @ResponseStatus(HttpStatus.CREATED)
-    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> createPost(Principal principal, @RequestBody PostCreateDTO postCreateDTO) {
-
-        return ResponseModel.builder()
-                .isSuccess(true)
-                .data(postService.createPost(principal, postCreateDTO))
-                .errors(null)
-                .build();
-    }
-
     @PostMapping(value = "/{id}/images", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Operation(summary = "Add image to post")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> addImage(@PathVariable("id") UUID postId, @RequestPart MultipartFile image) throws IOException {
+    public ResponseModel<Object> addImage(Principal principal, @PathVariable("id") UUID postId, @RequestPart MultipartFile image) throws IOException {
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(postService.addImage(postId, image))
+                .data(postService.addImage(principal, postId, image))
                 .errors(null)
                 .build();
     }

@@ -43,4 +43,8 @@ public class Post extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "activity_id", referencedColumnName = "id")
     private TravelActivity travelActivity;
+
+    @OneToMany(mappedBy = "post")
+    @JsonIgnore
+    private List<PostUserTagged> postUserTaggedList;
 }
