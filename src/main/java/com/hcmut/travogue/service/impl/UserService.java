@@ -3,6 +3,7 @@ package com.hcmut.travogue.service.impl;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
+import com.hcmut.travogue.model.dto.User.UserShortProfileDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
@@ -19,6 +20,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -43,16 +45,17 @@ public class UserService implements IUserService {
         res.setNumOfFollowers(userFollowRepository.countAllByTo_Id(userId));
         res.setNumOfFollowing(userFollowRepository.countAllByFrom_Id(userId));
         res.setNumOfPosts(postRepository.countAllByUser_Id(userId));
+        res.setHost(Arrays.asList(user.getRoles().split(",")).contains("ROLE_HOST"));
         if (userId != user.getId())
             res.setFollowStatus(userFollowRepository.existsByFrom_IdAndTo_Id(user.getId(), res.getId()));
         return res;
     }
 
-    public PageResponse<UserProfileDTO> getUsers(String keyword, int pageNumber, int pageSize, String sortField) {
+    public PageResponse<UserShortProfileDTO> getUsers(String keyword, int pageNumber, int pageSize, String sortField) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
 
         return new PageResponse<>(userRepository.findPageUsers(keyword, pageable)
-                .map(user -> modelMapper.map(user, UserProfileDTO.class)));
+                .map(user -> modelMapper.map(user, UserShortProfileDTO.class)));
     }
 
     @Override

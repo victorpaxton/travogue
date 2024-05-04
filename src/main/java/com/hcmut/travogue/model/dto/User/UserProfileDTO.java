@@ -28,6 +28,8 @@ public class UserProfileDTO {
     private int numOfFollowers;
     private int numOfFollowing;
 
+    private boolean isHost;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
