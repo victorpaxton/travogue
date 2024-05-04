@@ -12,9 +12,9 @@ import java.util.UUID;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, UUID> {
-    List<Post> findAllByUser_IdOrderByUpdatedAtDesc(UUID userId);
+    List<Post> findAllByUser_IdOrIdInOrderByUpdatedAtDesc(UUID userId, Collection<UUID> postTagged);
 
     int countAllByUser_Id(UUID userId);
 
-    Page<Post> findAllByUser_IdIn(Collection<UUID> uuidList, Pageable pageable);
+    Page<Post> findAllByUser_IdInOrIdIn(Collection<UUID> uuidList, Collection<UUID> postTagged, Pageable pageable);
 }

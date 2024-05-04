@@ -121,7 +121,12 @@ public class PostService implements IPostService {
 
     @Override
     public List<PostResponseDTO> getPostsByUser(UUID userId) {
-        return postRepository.findAllByUser_IdOrderByUpdatedAtDesc(userId)
+
+        Collection<UUID> postTagged = new ArrayList<>(postUserTaggedRepository.findAllByUser_Id(userId)
+                .stream().map(postOnly -> postOnly.getPost().getId())
+                .toList());
+
+        return postRepository.findAllByUser_IdOrIdInOrderByUpdatedAtDesc(userId, postTagged)
                 .stream().map(post -> {
                     PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
                     p.setNumOfComments(post.getPostComments().size());
@@ -197,8 +202,12 @@ public class PostService implements IPostService {
 
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by("updatedAt").descending());
 
+        Collection<UUID> postTagged = new ArrayList<>(postUserTaggedRepository.findAllByUser_Id(user.getId())
+                .stream().map(postOnly -> postOnly.getPost().getId())
+                .toList());
+
         return new PageResponse<>(
-                postRepository.findAllByUser_IdIn(followingList, pageable)
+                postRepository.findAllByUser_IdInOrIdIn(followingList, postTagged, pageable)
                 .map(post -> {
                     PostResponseDTO p = modelMapper.map(post, PostResponseDTO.class);
                     p.setNumOfComments(post.getPostComments().size());
