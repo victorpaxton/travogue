@@ -2,6 +2,7 @@ package com.hcmut.travogue.model.entity.User;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.Plan.Plan;
 import com.hcmut.travogue.model.entity.Post.Post;
 import com.hcmut.travogue.model.entity.Post.PostComment;
 import com.hcmut.travogue.model.entity.Post.PostLike;
@@ -73,6 +74,10 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     protected List<Post> posts;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<Plan> plans;
 
     @OneToMany(mappedBy = "to")
     @JsonIgnore

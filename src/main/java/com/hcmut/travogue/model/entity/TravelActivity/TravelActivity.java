@@ -2,6 +2,7 @@ package com.hcmut.travogue.model.entity.TravelActivity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
+import com.hcmut.travogue.model.entity.Plan.PlanActivity;
 import com.hcmut.travogue.model.entity.User.Host;
 import jakarta.persistence.*;
 import lombok.*;
@@ -74,5 +75,9 @@ public class TravelActivity extends BaseEntity {
     @OneToMany(mappedBy = "travelActivity")
     @JsonIgnore
     private List<Promotion> promotions;
+
+    @OneToMany(mappedBy = "travelActivity")
+    @JsonIgnore
+    private List<PlanActivity> planActivities;
 
 }
