@@ -184,17 +184,17 @@ public class TravelActivityController {
                 .build();
     }
 
-    @PostMapping(value = "/{id}/videos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    @Operation(summary = "Upload other images for an activity")
-    @ResponseStatus(HttpStatus.OK)
-    public ResponseModel<Object> uploadVideo(@PathVariable("id") UUID activityId, @RequestPart MultipartFile video) throws IOException {
-
-        return ResponseModel.builder()
-                .isSuccess(true)
-                .data(travelActivityService.uploadVideo(activityId, video))
-                .errors(null)
-                .build();
-    }
+//    @PostMapping(value = "/{id}/videos", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    @Operation(summary = "Upload other images for an activity")
+//    @ResponseStatus(HttpStatus.OK)
+//    public ResponseModel<Object> uploadVideo(@PathVariable("id") UUID activityId, @RequestPart MultipartFile video) throws IOException {
+//
+//        return ResponseModel.builder()
+//                .isSuccess(true)
+//                .data(travelActivityService.uploadVideo(activityId, video))
+//                .errors(null)
+//                .build();
+//    }
 
     @GetMapping("/search")
     @Operation(summary = "Search")
