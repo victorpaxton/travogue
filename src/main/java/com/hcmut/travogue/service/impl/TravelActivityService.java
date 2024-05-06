@@ -195,13 +195,23 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException {
+    public TravelActivity uploadImage(UUID activityId, MultipartFile file) throws IOException {
         TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+        String contentType = file.getContentType();
         String cur = activity.getImages();
-        if (Objects.equals(cur, ""))
-            activity.setImages(cloudinaryService.uploadFile("travel_activity", image));
-        else
-            activity.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
+        if (Objects.equals(cur, "")) {
+            if (contentType.startsWith("image/"))
+                activity.setImages(cloudinaryService.uploadFile("travel_activity", file));
+            else if (contentType.startsWith("video/"))
+                activity.setImages(cloudinaryService.uploadVideo("travel_activity", file));
+        }
+        else {
+            if (contentType.startsWith("image/"))
+                activity.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", file));
+            else if (contentType.startsWith("video/"))
+                activity.setImages(cur + ";" + cloudinaryService.uploadVideo("travel_activity", file));
+        }
+
         return travelActivityRepository.save(activity);
     }
 
