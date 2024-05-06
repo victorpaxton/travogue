@@ -206,6 +206,17 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
+    public TravelActivity uploadVideo(UUID activityId, MultipartFile video) throws IOException {
+        TravelActivity activity = travelActivityRepository.findById(activityId).orElseThrow();
+        String cur = activity.getImages();
+        if (Objects.equals(cur, ""))
+            activity.setImages(cloudinaryService.uploadVideo("travel_activity", video));
+        else
+            activity.setImages(cur + ";" + cloudinaryService.uploadVideo("travel_activity", video));
+        return travelActivityRepository.save(activity);
+    }
+
+    @Override
     public PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
 

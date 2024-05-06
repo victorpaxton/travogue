@@ -52,6 +52,7 @@ public interface ITravelActivityService {
     TravelActivity uploadMainImage(UUID activityId, MultipartFile image) throws IOException;
 
     TravelActivity uploadImage(UUID activityId, MultipartFile image) throws IOException;
+    TravelActivity uploadVideo(UUID activityId, MultipartFile video) throws IOException;
 
     PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria);
 }

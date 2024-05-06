@@ -22,4 +22,12 @@ public class CloudinaryService {
                 .get("secure_url")
                 .toString();
     }
+
+    public String uploadVideo(String folder, MultipartFile video) throws IOException {
+        return cloudinary.uploader()
+                .upload(video.getBytes(),
+                        Map.of("public_id", UUID.randomUUID().toString(), "folder", folder, "resource_type", "video"))
+                .get("secure_url")
+                .toString();
+    }
 }
