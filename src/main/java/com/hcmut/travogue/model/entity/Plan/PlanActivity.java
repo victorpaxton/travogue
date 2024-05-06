@@ -20,6 +20,8 @@ public class PlanActivity extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    private int day;
+
     @ManyToOne
     @JoinColumn(name = "plan_id", referencedColumnName = "id")
     @JsonIgnore
