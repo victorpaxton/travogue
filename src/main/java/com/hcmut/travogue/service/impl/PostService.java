@@ -101,15 +101,24 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public PostResponseDTO addImage(Principal principal, UUID postId, MultipartFile image) throws IOException {
+    public PostResponseDTO addImage(Principal principal, UUID postId, MultipartFile file) throws IOException {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
         Post post = postRepository.findById(postId).orElseThrow();
+        String contentType = file.getContentType();
         String cur = post.getImages();
-        if (Objects.equals(cur, ""))
-            post.setImages(cloudinaryService.uploadFile("travel_activity", image));
-        else
-            post.setImages(cur + ";" + cloudinaryService.uploadFile("travel_activity", image));
+        if (Objects.equals(cur, "")) {
+            if (contentType.startsWith("image/"))
+                post.setImages(cloudinaryService.uploadFile("post", file));
+            else if (contentType.startsWith("video/"))
+                post.setImages(cloudinaryService.uploadVideo("post", file));
+        }
+        else {
+            if (contentType.startsWith("image/"))
+                post.setImages(cur + ";" + cloudinaryService.uploadFile("post", file));
+            else if (contentType.startsWith("video/"))
+                post.setImages(cur + ";" + cloudinaryService.uploadVideo("post", file));
+        }
         PostResponseDTO p = modelMapper.map(postRepository.save(post), PostResponseDTO.class);
         p.setNumOfComments(post.getPostComments().size());
         p.setNumOfLikes(post.getPostLikes().size());
