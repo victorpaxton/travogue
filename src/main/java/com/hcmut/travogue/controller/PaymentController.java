@@ -38,10 +38,10 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.createSetupIntent(request.getEmail(), request.getPaymentMethodTypes()));
     }
 
-    @PostMapping("/charge-card")
-    public ResponseEntity<PaymentIntent> chargeSavedCard(@RequestBody ChargeRequest request) throws StripeException {
-        return ResponseEntity.ok(paymentService.chargeSavedCard(request.getEmail()));
-    }
+//    @PostMapping("/charge-card")
+//    public ResponseEntity<PaymentIntent> chargeSavedCard(@RequestBody ChargeRequest request) throws StripeException {
+//        return ResponseEntity.ok(paymentService.chargeSavedCard(request.getEmail()));
+//    }
 
 
 
