@@ -20,7 +20,7 @@ public class HostController {
     @GetMapping("/{id}")
     @Operation(summary = "Get a host details")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_HOST')")
+    @PreAuthorize("hasAuthority('ROLE_HOST','ROLE_USER')")
     public ResponseModel<Object> getHost(@PathVariable("id") UUID userId) {
 
         return ResponseModel.builder()
