@@ -51,5 +51,9 @@ logging:
         web: DEBUG
       hibernate: ERROR
 
+stripe:
+  api:
+    key: sk_test_51PE7eCGp2mOnFfc42ks65GHD5rQNb5qSID36ffv7su4tkQtqeA8kxpP9fdQfqZCREQyf9jayMWaTB3dm2sdMDKhb00lWtmTmSa
+
 springdoc:
   override-with-generic-response: false
