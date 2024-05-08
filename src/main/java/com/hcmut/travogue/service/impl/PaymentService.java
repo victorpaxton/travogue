@@ -48,7 +48,7 @@ public class PaymentService implements IPaymentService {
         return SetupIntent.create(params);
     }
 
-    private Customer createCustomer(String email) throws StripeException {
+    public Customer createCustomer(String email) throws StripeException {
         Map<String, Object> params = new HashMap<>();
         params.put("email", email);
         return Customer.create(params);
@@ -59,7 +59,7 @@ public class PaymentService implements IPaymentService {
         Customer customer = Customer.list(Map.of("email", email)).getData().get(0);
         PaymentMethod paymentMethod = PaymentMethod.list(Map.of("customer", customer.getId(), "type", "card")).getData().get(0);
         Map<String, Object> params = new HashMap<>();
-        params.put("amount", calculateOrderAmount());  // Implement calculateOrderAmount()
+//        params.put("amount", calculateOrderAmount());  // Implement calculateOrderAmount()
         params.put("currency", "usd");
         params.put("customer", customer.getId());
         params.put("payment_method", paymentMethod.getId());
