@@ -42,6 +42,8 @@ public class HostService implements IHostService {
                             return travelShort;
                         }).toList()
         );
+        res.setNumOfActivities(travelActivityRepository.countAllByHost_Id(hostId));
+        res.setNumOfCities(travelActivityRepository.countDistinctCityByHostId(hostId));
 
         return res;
     }

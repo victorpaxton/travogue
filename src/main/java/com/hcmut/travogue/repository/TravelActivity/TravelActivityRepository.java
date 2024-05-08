@@ -1,6 +1,5 @@
 package com.hcmut.travogue.repository.TravelActivity;
 
-import com.hcmut.travogue.model.entity.TravelActivity.City;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +34,11 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
     Page<TravelActivity> findPageTravelActivitiesByCity(@Param("cityId") UUID cityId, @Param("keyword") String keyword, Pageable pageable);
 
     Page<TravelActivity> findByHost_Id(UUID hostId, Pageable pageable);
+
+    int countAllByHost_Id(UUID hostId);
+
+    @Query(value = "SELECT COUNT(DISTINCT t.city_id) FROM travel_activity AS t WHERE t.host_id = :hostId", nativeQuery = true)
+    int countDistinctCityByHostId(@Param("hostId") UUID hostId);
 
     List<TravelActivity> findFirst10ByHost_IdOrderByAverageRatingDesc(UUID hostId);
 

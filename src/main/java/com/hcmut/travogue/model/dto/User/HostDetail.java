@@ -29,5 +29,8 @@ public class HostDetail {
     private String languages;
     private String selfIntroduction;
 
+    private int numOfCities;
+    private int numOfActivities;
+
     private List<TravelActivityShortResponse> hotTour;
 }
