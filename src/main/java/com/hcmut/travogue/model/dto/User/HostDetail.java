@@ -32,5 +32,11 @@ public class HostDetail {
     private int numOfCities;
     private int numOfActivities;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
     private List<TravelActivityShortResponse> hotTour;
 }
