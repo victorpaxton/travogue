@@ -30,7 +30,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class TravelActivityService implements ITravelActivityService {
@@ -235,6 +234,9 @@ public class TravelActivityService implements ITravelActivityService {
                         .map(travelActivity -> {
                             TravelActivityShortResponse res = modelMapper.map(travelActivity, TravelActivityShortResponse.class);
                             res.setCategoryName(travelActivity.getActivityCategory().getCategoryName());
+                            res.setCityName(travelActivity.getCity().getName());
+                            res.setRating(travelActivity.getAverageRating());
+                            res.setNumberOfRating(activityCommentRepository.countAllByTravelActivity_Id(travelActivity.getId()));
                             return res;
                         })
         );

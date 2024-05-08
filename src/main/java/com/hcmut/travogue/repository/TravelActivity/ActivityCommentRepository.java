@@ -12,4 +12,6 @@ public interface ActivityCommentRepository extends JpaRepository<ActivityComment
 
     List<ActivityComment> findByTravelActivityIdOrderByCreatedAtDesc(UUID activityId);
 
+    int countAllByTravelActivity_Id(UUID activityId);
+
 }

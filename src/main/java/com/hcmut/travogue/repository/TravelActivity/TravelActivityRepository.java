@@ -36,6 +36,8 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
 
     Page<TravelActivity> findByHost_Id(UUID hostId, Pageable pageable);
 
+    List<TravelActivity> findFirst10ByHost_IdOrderByAverageRatingDesc(UUID hostId);
+
     @Query(value = "SELECT \n" +
             "            (COALESCE(SUM(activity_comment.rating), 0) + :newRating) /\n" +
             "            (COUNT(activity_comment.rating) + 1)\n" +

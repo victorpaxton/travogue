@@ -10,4 +10,7 @@ public class TravelActivityShortResponse {
     private String activityName;
     private String mainImage;
     private String categoryName;
+    private String cityName;
+    private double rating;
+    private int numberOfRating;
 }
