@@ -105,7 +105,7 @@ public class TravelActivityController {
     public ResponseModel<Object> getActivitiesByHost(@RequestParam UUID hostId,
                                                      @RequestParam(defaultValue = "0") int pageNumber,
                                                      @RequestParam(defaultValue = "4") int pageSize,
-                                                     @RequestParam(defaultValue = "created_at") String sortField) {
+                                                     @RequestParam(defaultValue = "updatedAt") String sortField) {
         return ResponseModel.builder()
                 .isSuccess(true)
                 .data(travelActivityService.getActivitiesByHost(hostId, pageNumber, pageSize, sortField))
