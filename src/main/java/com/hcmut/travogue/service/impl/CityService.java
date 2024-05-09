@@ -4,6 +4,7 @@ import com.hcmut.travogue.file.CloudinaryService;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.entity.TravelActivity.City;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
+import com.hcmut.travogue.repository.TravelActivity.ActivityCategoryRepository;
 import com.hcmut.travogue.repository.TravelActivity.CityRepository;
 import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.service.ICityService;
@@ -15,9 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class CityService implements ICityService {
@@ -26,6 +25,9 @@ public class CityService implements ICityService {
 
     @Autowired
     private TravelActivityRepository travelActivityRepository;
+
+    @Autowired
+    private ActivityCategoryRepository activityCategoryRepository;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -48,9 +50,48 @@ public class CityService implements ICityService {
     }
 
     @Override
-    public PageResponse<TravelActivity> getTravelActivitiesByCity(UUID cityId, String keyword, int pageNumber, int pageSize, String sortField) {
+    public PageResponse<TravelActivity> getTravelActivitiesByCategoryInACity(UUID cityId, UUID mainCategoryId, String filter, String keyword, int pageNumber, int pageSize, String sortField) {
+        String[] filterTypes = filter.split("&");
+
+//        type=c7a2fe12-21ee-4757-a36d-ed429743b472;c7a2fe12-21ee-4757-a36d-ed429743b472&price=150-350&rating=5:4
+        List<UUID> categoryIds = new ArrayList<>();
+        categoryIds.add(mainCategoryId);
+        int minPrice = 0;
+        int maxPrice = Integer.MAX_VALUE;
+        int lowRating = 0;
+        int highRating = 5;
+
+        for (String filterType : filterTypes) {
+            String key = filterType.split("=")[0];
+            String value = filterType.split("=")[1];
+            if (key == "type") {
+                categoryIds = Arrays.stream(value.split(";")).map(UUID::fromString).toList();
+            } else if (key == "price") {
+                minPrice = Integer.parseInt(value.split("-")[0]);
+                maxPrice = Integer.parseInt(value.split("-")[1]);
+            } else if (key == "rating") {
+                highRating = Integer.parseInt(value.split(":")[0]);
+                lowRating = Integer.parseInt(value.split(":")[1]);
+            }
+        }
+
+        List<UUID> allChildCategories = new ArrayList<>();
+        for (UUID categoryId : categoryIds) {
+            allChildCategories.addAll(activityCategoryRepository.findChildCategoryIds(categoryId));
+        }
+
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).descending());
-        return new PageResponse<>(travelActivityRepository.findPageTravelActivitiesByCity(cityId, keyword, pageable));
+
+        return new PageResponse<>(travelActivityRepository
+                .findPageTravelActivitiesByCategoriesInACity(
+                        allChildCategories,
+                        cityId,
+                        keyword,
+                        lowRating,
+                        highRating,
+                        minPrice,
+                        maxPrice,
+                        pageable));
     }
 
     @Override

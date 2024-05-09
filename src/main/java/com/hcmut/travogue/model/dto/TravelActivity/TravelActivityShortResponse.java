@@ -12,5 +12,6 @@ public class TravelActivityShortResponse {
     private String categoryName;
     private String cityName;
     private double rating;
+    private Integer generalPrice;
     private int numberOfRating;
 }

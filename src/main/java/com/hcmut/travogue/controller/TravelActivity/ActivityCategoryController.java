@@ -104,7 +104,7 @@ public class ActivityCategoryController {
                                                          @RequestParam(defaultValue = "") String keyword,
                                                          @RequestParam(defaultValue = "0") int pageNumber,
                                                          @RequestParam(defaultValue = "4") int pageSize,
-                                                         @RequestParam(defaultValue = "travel_point") String sortField) {
+                                                         @RequestParam(defaultValue = "average_rating") String sortField) {
         return ResponseModel.builder()
                 .isSuccess(true)
                 .data(activityCategoryService.getTravelActivitiesByCategory(categoryId, keyword, pageNumber, pageSize, sortField))

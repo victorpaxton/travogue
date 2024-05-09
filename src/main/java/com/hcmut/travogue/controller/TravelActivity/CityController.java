@@ -73,16 +73,18 @@ public class CityController {
     }
 
     @GetMapping("/{id}/travel-activities")
-    @Operation(summary = "Get travel activities of a city")
+    @Operation(summary = "Get travel activities by categories of a city")
     @ResponseStatus(HttpStatus.OK)
     public ResponseModel<Object> getTravelActivitiesByCity(@PathVariable("id") UUID id,
+                                                           @RequestParam("mainCategoryId") UUID mainCategoryId,
+                                                           @RequestParam(defaultValue = "") String filter,
                                                            @RequestParam(defaultValue = "") String keyword,
                                                            @RequestParam(defaultValue = "0") int pageNumber,
                                                            @RequestParam(defaultValue = "4") int pageSize,
-                                                           @RequestParam(defaultValue = "created_at") String sortField) {
+                                                           @RequestParam(defaultValue = "average_rating") String sortField) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(cityService.getTravelActivitiesByCity(id, keyword, pageNumber, pageSize, sortField))
+                .data(cityService.getTravelActivitiesByCategoryInACity(id, mainCategoryId, filter, keyword, pageNumber, pageSize, sortField))
                 .errors(null)
                 .build();
 

@@ -27,11 +27,21 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
             "ILIKE %:keyword%", nativeQuery = true)
     Page<TravelActivity> findPageTravelActivitiesByCategories(@Param("categoryIds") List<UUID> categoryIds , @Param("keyword") String keyword, Pageable pageable);
 
+
     @Query(value = "SELECT * FROM travel_activity AS t " +
-            "WHERE t.city_id = :cityId " +
+            "WHERE t.city_id = :cityId AND t.activity_category_id IN (:categoryIds) " +
+            "AND t.average_rating BETWEEN :minRating AND :maxRating " +
+            "AND t.general_price BETWEEN :minPrice AND :maxPrice " +
             "AND CONCAT(t.activity_name, ' ', t.tags, ' ', t.personal_options, ' ', t.general_price) " +
             "ILIKE %:keyword%", nativeQuery = true)
-    Page<TravelActivity> findPageTravelActivitiesByCity(@Param("cityId") UUID cityId, @Param("keyword") String keyword, Pageable pageable);
+    Page<TravelActivity> findPageTravelActivitiesByCategoriesInACity(@Param("categoryIds") List<UUID> categoryIds,
+                                                                     @Param("cityId") UUID cityId,
+                                                                     @Param("keyword") String keyword,
+                                                                     @Param("minRating") int minRating,
+                                                                     @Param("maxRating") int maxRating,
+                                                                     @Param("minPrice") int minPrice,
+                                                                     @Param("maxPrice") int maxPrice,
+                                                                     Pageable pageable);
 
     Page<TravelActivity> findByHost_Id(UUID hostId, Pageable pageable);
 

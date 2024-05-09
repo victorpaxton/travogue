@@ -16,7 +16,7 @@ public interface ICityService {
     public PageResponse<City> searchCities(int pageNumber, int pageSize, String sortField, String criteria);
 
     // Retrieve activities for a given city
-    public PageResponse<TravelActivity> getTravelActivitiesByCity(UUID cityId, String keyword, int pageNumber, int pageSize, String sortField);
+    public PageResponse<TravelActivity> getTravelActivitiesByCategoryInACity(UUID cityId, UUID mainCategoryId, String filter, String keyword, int pageNumber, int pageSize, String sortField);
 
     public City uploadMainImage(UUID cityId, MultipartFile image) throws IOException;
 
