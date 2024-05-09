@@ -21,7 +21,7 @@ public class UserController {
     @GetMapping("/{id}")
     @Operation(summary = "Get a user details")
     @ResponseStatus(HttpStatus.OK)
-    @PreAuthorize("hasAuthority('ROLE_USER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_HOST')")
     public ResponseModel<Object> getUser(Principal principal, @PathVariable("id") UUID userId) {
 
         return ResponseModel.builder()
