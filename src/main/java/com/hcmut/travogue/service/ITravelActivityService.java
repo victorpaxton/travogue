@@ -34,7 +34,7 @@ public interface ITravelActivityService {
     public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO);
 
     // Retrieve activities hosted by a specific user
-    public Page<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);
+    public PageResponse<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);
 
     // Delete a travel activity by its ID
     public void deleteActivity(UUID activityId);

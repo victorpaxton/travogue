@@ -142,10 +142,12 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public Page<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField) {
+    public PageResponse<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).descending());
 
-        return travelActivityRepository.findByHost_Id(hostId, pageable);
+        return new PageResponse<>(
+                travelActivityRepository.findByHost_Id(hostId, pageable)
+        );
     }
 
     @Override
