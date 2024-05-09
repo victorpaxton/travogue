@@ -8,6 +8,7 @@ import com.hcmut.travogue.repository.TravelActivity.ActivityCategoryRepository;
 import com.hcmut.travogue.repository.TravelActivity.CityRepository;
 import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.service.ICityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.util.*;
 
 @Service
+@Slf4j
 public class CityService implements ICityService {
     @Autowired
     private CityRepository cityRepository;
@@ -64,17 +66,22 @@ public class CityService implements ICityService {
             for (String filterType : filterTypes) {
                 String key = filterType.split("=")[0];
                 String value = filterType.split("=")[1];
-                if (key == "type") {
-                    categoryIds = Arrays.stream(value.split(";")).map(UUID::fromString).toList();
-                } else if (key == "price") {
-                    minPrice = Integer.parseInt(value.split("-")[0]);
-                    maxPrice = Integer.parseInt(value.split("-")[1]);
-                } else if (key == "rating") {
-                    highRating = Integer.parseInt(value.split(":")[0]);
-                    lowRating = Integer.parseInt(value.split(":")[1]);
+                switch (key) {
+                    case "type" -> categoryIds = Arrays.stream(value.split(";")).map(UUID::fromString).toList();
+                    case "price" -> {
+                        minPrice = Integer.parseInt(value.split("-")[0]);
+                        maxPrice = Integer.parseInt(value.split("-")[1]);
+                    }
+                    case "rating" -> {
+                        highRating = Integer.parseInt(value.split(":")[0]);
+                        lowRating = Integer.parseInt(value.split(":")[1]);
+                    }
                 }
             }
         }
+
+        log.error("Price: " + minPrice + ' ' + maxPrice);
+        log.error("Rating: " + lowRating + ' ' + highRating);
 
         List<UUID> allChildCategories = new ArrayList<>();
         for (UUID categoryId : categoryIds) {
