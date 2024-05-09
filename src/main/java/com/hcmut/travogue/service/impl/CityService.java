@@ -51,8 +51,6 @@ public class CityService implements ICityService {
 
     @Override
     public PageResponse<TravelActivity> getTravelActivitiesByCategoryInACity(UUID cityId, UUID mainCategoryId, String filter, String keyword, int pageNumber, int pageSize, String sortField) {
-        String[] filterTypes = filter.split("&");
-
 //        type=c7a2fe12-21ee-4757-a36d-ed429743b472;c7a2fe12-21ee-4757-a36d-ed429743b472&price=150-350&rating=5:4
         List<UUID> categoryIds = new ArrayList<>();
         categoryIds.add(mainCategoryId);
@@ -61,17 +59,20 @@ public class CityService implements ICityService {
         int lowRating = 0;
         int highRating = 5;
 
-        for (String filterType : filterTypes) {
-            String key = filterType.split("=")[0];
-            String value = filterType.split("=")[1];
-            if (key == "type") {
-                categoryIds = Arrays.stream(value.split(";")).map(UUID::fromString).toList();
-            } else if (key == "price") {
-                minPrice = Integer.parseInt(value.split("-")[0]);
-                maxPrice = Integer.parseInt(value.split("-")[1]);
-            } else if (key == "rating") {
-                highRating = Integer.parseInt(value.split(":")[0]);
-                lowRating = Integer.parseInt(value.split(":")[1]);
+        if (filter != null && !filter.isEmpty()) {
+            String[] filterTypes = filter.split("&");
+            for (String filterType : filterTypes) {
+                String key = filterType.split("=")[0];
+                String value = filterType.split("=")[1];
+                if (key == "type") {
+                    categoryIds = Arrays.stream(value.split(";")).map(UUID::fromString).toList();
+                } else if (key == "price") {
+                    minPrice = Integer.parseInt(value.split("-")[0]);
+                    maxPrice = Integer.parseInt(value.split("-")[1]);
+                } else if (key == "rating") {
+                    highRating = Integer.parseInt(value.split(":")[0]);
+                    lowRating = Integer.parseInt(value.split(":")[1]);
+                }
             }
         }
 
