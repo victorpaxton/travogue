@@ -4,10 +4,7 @@ import com.hcmut.travogue.model.entity.BaseEntity;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
 import com.hcmut.travogue.model.entity.User.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
 
 import java.util.UUID;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
+@Builder
 public class Ticket extends BaseEntity {
 
     @Id
