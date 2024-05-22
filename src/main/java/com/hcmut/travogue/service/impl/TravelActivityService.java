@@ -3,6 +3,7 @@ package com.hcmut.travogue.service.impl;
 import com.hcmut.travogue.file.CloudinaryService;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.TravelActivity.*;
+import com.hcmut.travogue.model.entity.Ticket.InsuranceActivity;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityDate;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
@@ -11,9 +12,12 @@ import com.hcmut.travogue.model.entity.User.Host;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
 import com.hcmut.travogue.repository.HostRepository;
+import com.hcmut.travogue.repository.Ticket.InsuranceActivityRepository;
+import com.hcmut.travogue.repository.Ticket.InsuranceCompanyRepository;
 import com.hcmut.travogue.repository.TravelActivity.*;
 import com.hcmut.travogue.repository.UserRepository;
 import com.hcmut.travogue.service.ITravelActivityService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -57,6 +61,12 @@ public class TravelActivityService implements ITravelActivityService {
 
     @Autowired
     private ActivityTimeFrameRepository activityTimeFrameRepository;
+
+    @Autowired
+    private InsuranceCompanyRepository insuranceCompanyRepository;
+
+    @Autowired
+    private InsuranceActivityRepository insuranceActivityRepository;
 
     @Autowired
     private CloudinaryService cloudinaryService;
@@ -128,6 +138,7 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
+    @Transactional
     public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId,  ExperienceCreateDTO experienceCreateDTO) {
         Host host = (Host) ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
@@ -144,6 +155,16 @@ public class TravelActivityService implements ITravelActivityService {
         newActivity.setAverageRating((double) 0);
 
         TravelActivity newActivityResponse = travelActivityRepository.save(newActivity);
+
+        experienceCreateDTO.getInsurances()
+                .forEach(insuranceId -> {
+                    insuranceActivityRepository.save(
+                            InsuranceActivity.builder()
+                                    .insurance(insuranceCompanyRepository.findById(insuranceId).orElseThrow())
+                                    .travelActivity(newActivity)
+                                    .build()
+                    );
+                });
 
         experienceCreateDTO.getActivityTimeFramesCreate()
                 .forEach(activityTimeFrameDTO -> {
