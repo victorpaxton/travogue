@@ -31,7 +31,7 @@ public interface ITravelActivityService {
     public TravelActivity createActivity(UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO);
 
     // Create a new travel activity (experience)
-    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId, ActivityCreateDTO activityCreateDTO);
+    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId, ExperienceCreateDTO experienceCreateDTO);
 
     // Retrieve activities hosted by a specific user
     public PageResponse<TravelActivity> getActivitiesByHost(UUID hostId, int pageNumber, int pageSize, String sortField);

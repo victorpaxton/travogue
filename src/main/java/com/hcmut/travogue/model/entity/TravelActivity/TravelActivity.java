@@ -3,6 +3,8 @@ package com.hcmut.travogue.model.entity.TravelActivity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hcmut.travogue.model.entity.BaseEntity;
 import com.hcmut.travogue.model.entity.Plan.PlanActivity;
+import com.hcmut.travogue.model.entity.Ticket.InsuranceActivity;
+import com.hcmut.travogue.model.entity.Ticket.InsuranceCompany;
 import com.hcmut.travogue.model.entity.User.Host;
 import jakarta.persistence.*;
 import lombok.*;
@@ -80,4 +82,7 @@ public class TravelActivity extends BaseEntity {
     @JsonIgnore
     private List<PlanActivity> planActivities;
 
+    @OneToMany(mappedBy = "travelActivity")
+    @JsonIgnore
+    private List<InsuranceActivity> insuranceActivities;
 }

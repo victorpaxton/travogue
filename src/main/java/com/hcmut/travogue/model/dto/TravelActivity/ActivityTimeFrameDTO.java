@@ -8,6 +8,9 @@ import java.util.Date;
 
 @Data
 public class ActivityTimeFrameDTO {
+    @Temporal(TemporalType.DATE)
+    private Date date;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date startAt;
 

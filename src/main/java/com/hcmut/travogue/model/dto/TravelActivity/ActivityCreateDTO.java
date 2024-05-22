@@ -8,6 +8,4 @@ public class ActivityCreateDTO {
     private String description;
     private String tags;
     private String languages;
-    private String personalOptions;
-    private Integer generalPrice;
 }

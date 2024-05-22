@@ -1,10 +1,7 @@
 package com.hcmut.travogue.controller.TravelActivity;
 
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCommentDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityCreateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityDateDTO;
-import com.hcmut.travogue.model.dto.TravelActivity.ActivityTimeFrameDTO;
+import com.hcmut.travogue.model.dto.TravelActivity.*;
 import com.hcmut.travogue.service.ITravelActivityService;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
@@ -91,10 +88,10 @@ public class TravelActivityController {
     public ResponseModel<Object> createExperience(Principal principal,
                                                   @RequestParam UUID categoryId,
                                                   @RequestParam UUID cityId,
-                                                  @RequestBody ActivityCreateDTO activityCreateDTO) {
+                                                  @RequestBody ExperienceCreateDTO experienceCreateDTO) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.createExperience(principal, categoryId, cityId, activityCreateDTO))
+                .data(travelActivityService.createExperience(principal, categoryId, cityId, experienceCreateDTO))
                 .errors(null)
                 .build();
     }

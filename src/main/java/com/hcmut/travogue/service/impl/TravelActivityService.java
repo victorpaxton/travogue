@@ -128,17 +128,44 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId,  ActivityCreateDTO activityCreateDTO) {
+    public TravelActivity createExperience(Principal principal, UUID categoryId, UUID cityId,  ExperienceCreateDTO experienceCreateDTO) {
         Host host = (Host) ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
 
-        TravelActivity newActivity = modelMapper.map(activityCreateDTO, TravelActivity.class);
+        TravelActivity newActivity = TravelActivity.builder()
+                .activityName(experienceCreateDTO.getActivityName())
+                .description(experienceCreateDTO.getDescription())
+                .tags(experienceCreateDTO.getTags())
+                .build();
         newActivity.setActivityCategory(activityCategoryRepository.findById(categoryId).orElseThrow());
         newActivity.setHost(host);
         newActivity.setCity(cityRepository.findById(cityId).orElseThrow());
         newActivity.setImages("");
         newActivity.setMainImage("");
         newActivity.setAverageRating((double) 0);
-        return travelActivityRepository.save(newActivity);
+
+        TravelActivity newActivityResponse = travelActivityRepository.save(newActivity);
+
+        experienceCreateDTO.getActivityTimeFramesCreate()
+                .forEach(activityTimeFrameDTO -> {
+                    ActivityDate activityDate = null;
+                    if (!activityDateRepository.existsByDate(activityTimeFrameDTO.getDate())) {
+                        activityDate = activityDateRepository.save(
+                                ActivityDate.builder()
+                                        .date(activityTimeFrameDTO.getDate())
+                                        .hostNotes("")
+                                        .activity(newActivityResponse)
+                                        .build()
+                        );
+                    } else {
+                        activityDate = activityDateRepository.findByDate(activityTimeFrameDTO.getDate());
+                    }
+                    ActivityTimeFrame activityTimeFrame = modelMapper.map(activityTimeFrameDTO, ActivityTimeFrame.class);
+                    activityTimeFrame.setNumOfRegisteredGuests(0);
+                    activityTimeFrame.setActivityDate(activityDate);
+                    activityTimeFrameRepository.save(activityTimeFrame);
+                });
+
+        return travelActivityRepository.findById(newActivityResponse.getId()).orElseThrow();
     }
 
     @Override
@@ -162,7 +189,6 @@ public class TravelActivityService implements ITravelActivityService {
         activity.setDescription(activityCreateDTO.getDescription());
         activity.setTags(activityCreateDTO.getTags());
         activity.setLanguages(activityCreateDTO.getLanguages());
-        activity.setPersonalOptions(activityCreateDTO.getPersonalOptions());
         return travelActivityRepository.save(activity);
     }
 
