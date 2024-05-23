@@ -70,7 +70,7 @@ public class TravelActivity extends BaseEntity {
     @JoinColumn(name = "host_id", referencedColumnName = "id")
     private Host host;
 
-    @OneToMany(mappedBy = "travelActivity")
+    @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ActivityComment> activityComments;
 
@@ -78,11 +78,11 @@ public class TravelActivity extends BaseEntity {
     @JsonIgnore
     private List<Promotion> promotions;
 
-    @OneToMany(mappedBy = "travelActivity")
+    @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<PlanActivity> planActivities;
 
-    @OneToMany(mappedBy = "travelActivity")
+    @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<InsuranceActivity> insuranceActivities;
 }

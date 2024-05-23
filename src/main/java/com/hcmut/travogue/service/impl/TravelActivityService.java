@@ -157,14 +157,12 @@ public class TravelActivityService implements ITravelActivityService {
         TravelActivity newActivityResponse = travelActivityRepository.save(newActivity);
 
         experienceCreateDTO.getInsurances()
-                .forEach(insuranceId -> {
-                    insuranceActivityRepository.save(
-                            InsuranceActivity.builder()
-                                    .insurance(insuranceCompanyRepository.findById(insuranceId).orElseThrow())
-                                    .travelActivity(newActivity)
-                                    .build()
-                    );
-                });
+                .forEach(insuranceId -> insuranceActivityRepository.save(
+                        InsuranceActivity.builder()
+                                .insurance(insuranceCompanyRepository.findById(insuranceId).orElseThrow())
+                                .travelActivity(newActivity)
+                                .build()
+                ));
 
         experienceCreateDTO.getActivityTimeFramesCreate()
                 .forEach(activityTimeFrameDTO -> {
