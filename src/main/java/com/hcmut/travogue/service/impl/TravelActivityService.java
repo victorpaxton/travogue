@@ -30,10 +30,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class TravelActivityService implements ITravelActivityService {
@@ -146,7 +143,9 @@ public class TravelActivityService implements ITravelActivityService {
                 .activityName(experienceCreateDTO.getActivityName())
                 .description(experienceCreateDTO.getDescription())
                 .tags(experienceCreateDTO.getTags())
+                .generalPrice(experienceCreateDTO.getActivityTimeFramesCreate().get(0).getAdultsPrice())
                 .build();
+
         newActivity.setActivityCategory(activityCategoryRepository.findById(categoryId).orElseThrow());
         newActivity.setHost(host);
         newActivity.setCity(cityRepository.findById(cityId).orElseThrow());
