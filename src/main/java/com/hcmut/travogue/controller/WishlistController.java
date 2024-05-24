@@ -45,7 +45,7 @@ public class WishlistController {
 
     @GetMapping
     @Operation(summary = "Get wishlist of a user")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
     public ResponseModel<Object> removeFromWishlist(@RequestParam("userId") UUID userId) {
 

@@ -35,7 +35,8 @@ public class WishlistService implements IWishlistService {
 
     @Override
     public void removeFromWishlist(UUID userId, UUID activityId) {
-        wishlistRepository.deleteByUser_IdAndTravelActivity_Id(userId, activityId);
+        Wishlist wishlist = wishlistRepository.findByUser_IdAndTravelActivity_Id(userId, activityId).orElseThrow();
+        wishlistRepository.delete(wishlist);
     }
 
     @Override
