@@ -8,6 +8,7 @@ import com.hcmut.travogue.service.IWishlistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -35,5 +36,10 @@ public class WishlistService implements IWishlistService {
     @Override
     public void removeFromWishlist(UUID userId, UUID activityId) {
         wishlistRepository.deleteByUser_IdAndTravelActivity_Id(userId, activityId);
+    }
+
+    @Override
+    public List<Wishlist> getWishlistOfAUser(UUID userId) {
+        return wishlistRepository.findAllByUser_IdOrderByUpdatedAtDesc(userId);
     }
 }

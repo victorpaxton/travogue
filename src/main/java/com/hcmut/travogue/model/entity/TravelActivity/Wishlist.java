@@ -21,11 +21,11 @@ public class Wishlist extends BaseEntity {
     private UUID id;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "travel_activity_id", referencedColumnName = "id")
-    @JsonIgnore
     private TravelActivity travelActivity;
 }

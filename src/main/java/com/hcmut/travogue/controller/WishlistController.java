@@ -42,4 +42,17 @@ public class WishlistController {
                 .errors(null)
                 .build();
     }
+
+    @GetMapping
+    @Operation(summary = "Get wishlist of a user")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
+    public ResponseModel<Object> removeFromWishlist(@RequestParam("userId") UUID userId) {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(wishlistService.getWishlistOfAUser(userId))
+                .errors(null)
+                .build();
+    }
 }
