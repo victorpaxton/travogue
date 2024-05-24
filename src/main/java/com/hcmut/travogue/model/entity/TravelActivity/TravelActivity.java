@@ -85,4 +85,8 @@ public class TravelActivity extends BaseEntity {
     @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<InsuranceActivity> insuranceActivities;
+
+    @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Wishlist> wishlists;
 }

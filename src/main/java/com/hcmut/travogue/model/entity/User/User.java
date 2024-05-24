@@ -9,6 +9,7 @@ import com.hcmut.travogue.model.entity.Post.PostLike;
 import com.hcmut.travogue.model.entity.Post.PostUserTagged;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityComment;
+import com.hcmut.travogue.model.entity.TravelActivity.Wishlist;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -90,4 +91,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     protected List<PostUserTagged> postUserTaggedList;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    protected List<Wishlist> wishlists;
 }
