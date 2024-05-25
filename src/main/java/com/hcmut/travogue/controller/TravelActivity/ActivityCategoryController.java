@@ -93,7 +93,7 @@ public class ActivityCategoryController {
     public ResponseModel<Object> getPopularTravelActivitiesByCategory(Principal principal, @PathVariable("id") UUID categoryId) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(activityCategoryService.getPopularTravelActivitiesByCategory(categoryId))
+                .data(activityCategoryService.getPopularTravelActivitiesByCategory(principal, categoryId))
                 .errors(null)
                 .build();
     }
@@ -109,7 +109,7 @@ public class ActivityCategoryController {
                                                          @RequestParam(defaultValue = "average_rating") String sortField) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(activityCategoryService.getTravelActivitiesByCategory(categoryId, keyword, pageNumber, pageSize, sortField))
+                .data(activityCategoryService.getTravelActivitiesByCategory(principal, categoryId, keyword, pageNumber, pageSize, sortField))
                 .errors(null)
                 .build();
     }
