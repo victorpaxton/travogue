@@ -47,7 +47,7 @@ public class WishlistController {
     @Operation(summary = "Get wishlist of a user")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_HOST')")
-    public ResponseModel<Object> removeFromWishlist(@RequestParam("userId") UUID userId) {
+    public ResponseModel<Object> getWishlistOfAUser(@RequestParam("userId") UUID userId) {
 
         return ResponseModel.builder()
                 .isSuccess(true)

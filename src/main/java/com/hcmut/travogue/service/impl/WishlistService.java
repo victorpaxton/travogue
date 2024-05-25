@@ -1,5 +1,6 @@
 package com.hcmut.travogue.service.impl;
 
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.TravelActivity.Wishlist;
 import com.hcmut.travogue.repository.TravelActivity.TravelActivityRepository;
 import com.hcmut.travogue.repository.UserRepository;
@@ -40,7 +41,12 @@ public class WishlistService implements IWishlistService {
     }
 
     @Override
-    public List<Wishlist> getWishlistOfAUser(UUID userId) {
-        return wishlistRepository.findAllByUser_IdOrderByUpdatedAtDesc(userId);
+    public List<TravelActivity> getWishlistOfAUser(UUID userId) {
+        return wishlistRepository.findAllByUser_IdOrderByUpdatedAtDesc(userId)
+                .stream().map(wishlist -> {
+                    TravelActivity travelActivity = wishlist.getTravelActivity();
+                    travelActivity.setLiked(wishlistRepository.existsByUser_IdAndTravelActivity_Id(userId, travelActivity.getId()));
+                    return travelActivity;
+                }).toList();
     }
 }

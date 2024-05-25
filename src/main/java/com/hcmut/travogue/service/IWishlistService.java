@@ -1,5 +1,6 @@
 package com.hcmut.travogue.service;
 
+import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 import com.hcmut.travogue.model.entity.TravelActivity.Wishlist;
 
 import java.util.List;
@@ -10,5 +11,5 @@ public interface IWishlistService {
 
     public void removeFromWishlist(UUID userId, UUID activityId);
 
-    public List<Wishlist> getWishlistOfAUser(UUID userId);
+    public List<TravelActivity> getWishlistOfAUser(UUID userId);
 }
