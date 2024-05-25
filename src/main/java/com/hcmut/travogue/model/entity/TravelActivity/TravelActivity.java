@@ -91,5 +91,5 @@ public class TravelActivity extends BaseEntity {
     private List<Wishlist> wishlists;
 
     @Column(name = "is_liked")
-    private boolean isLiked;
+    private boolean isLiked = false;
 }
