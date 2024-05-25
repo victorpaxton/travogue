@@ -90,5 +90,6 @@ public class TravelActivity extends BaseEntity {
     @JsonIgnore
     private List<Wishlist> wishlists;
 
-    private boolean isLiked = false;
+    @Column(name = "is_liked")
+    private boolean isLiked;
 }
