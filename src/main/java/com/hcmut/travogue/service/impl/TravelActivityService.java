@@ -16,6 +16,7 @@ import com.hcmut.travogue.repository.Ticket.InsuranceActivityRepository;
 import com.hcmut.travogue.repository.Ticket.InsuranceCompanyRepository;
 import com.hcmut.travogue.repository.TravelActivity.*;
 import com.hcmut.travogue.repository.UserRepository;
+import com.hcmut.travogue.repository.WishlistRepository;
 import com.hcmut.travogue.service.ITravelActivityService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
@@ -66,19 +67,29 @@ public class TravelActivityService implements ITravelActivityService {
     private InsuranceActivityRepository insuranceActivityRepository;
 
     @Autowired
+    private WishlistRepository wishlistRepository;
+
+    @Autowired
     private CloudinaryService cloudinaryService;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @Override
-    public List<TravelActivity> getPopularTravelActivities() {
-        return travelActivityRepository.findFirst10ByOrderByTravelPointDesc();
+    public List<TravelActivity> getPopularTravelActivities(Principal principal) {
+        User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
+        return travelActivityRepository.findFirst10ByOrderByTravelPointDesc()
+                .stream()
+                .peek(travelActivity -> travelActivity.setLiked(wishlistRepository.existsByUser_IdAndTravelActivity_Id(user.getId(), travelActivity.getId())))
+                .toList();
     }
 
     @Override
-    public TravelActivity getTravelActivity(UUID activityId) {
-        return travelActivityRepository.findById(activityId).orElseThrow();
+    public TravelActivity getTravelActivity(Principal principal, UUID activityId) {
+        User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
+        TravelActivity travelActivity = travelActivityRepository.findById(activityId).orElseThrow();
+        travelActivity.setLiked(wishlistRepository.existsByUser_IdAndTravelActivity_Id(user.getId(), travelActivity.getId()));
+        return travelActivity;
     }
 
     @Override

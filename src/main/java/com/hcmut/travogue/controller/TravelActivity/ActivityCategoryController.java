@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.UUID;
 
 @RestController
@@ -89,7 +90,7 @@ public class ActivityCategoryController {
     @GetMapping("/{id}/popular-activities")
     @Operation(summary = "Get top 10 popular travel activities of a category")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseModel<Object> getPopularTravelActivitiesByCategory(@PathVariable("id") UUID categoryId) {
+    public ResponseModel<Object> getPopularTravelActivitiesByCategory(Principal principal, @PathVariable("id") UUID categoryId) {
         return ResponseModel.builder()
                 .isSuccess(true)
                 .data(activityCategoryService.getPopularTravelActivitiesByCategory(categoryId))
@@ -100,7 +101,8 @@ public class ActivityCategoryController {
     @GetMapping("/{id}/travel-activities")
     @Operation(summary = "Get travel activities of a category (all activities of that category and its children)")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseModel<Object> getActivitiesByCategory(@PathVariable("id") UUID categoryId,
+    public ResponseModel<Object> getActivitiesByCategory(Principal principal,
+                                                         @PathVariable("id") UUID categoryId,
                                                          @RequestParam(defaultValue = "") String keyword,
                                                          @RequestParam(defaultValue = "0") int pageNumber,
                                                          @RequestParam(defaultValue = "4") int pageSize,

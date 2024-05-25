@@ -12,5 +12,7 @@ import java.util.UUID;
 public interface WishlistRepository extends JpaRepository<Wishlist, UUID> {
     Optional<Wishlist> findByUser_IdAndTravelActivity_Id(UUID userId, UUID travelActivityId);
 
+    boolean existsByUser_IdAndTravelActivity_Id(UUID userId, UUID activityId);
+
     List<Wishlist> findAllByUser_IdOrderByUpdatedAtDesc(UUID userId);
 }

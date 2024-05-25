@@ -26,10 +26,10 @@ public class TravelActivityController {
     @GetMapping("/popular")
     @Operation(summary = "Get top 10 popular travel activities")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseModel<Object> getPopularTravelActivities() {
+    public ResponseModel<Object> getPopularTravelActivities(Principal principal) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.getPopularTravelActivities())
+                .data(travelActivityService.getPopularTravelActivities(principal))
                 .errors(null)
                 .build();
 
@@ -38,10 +38,10 @@ public class TravelActivityController {
     @GetMapping("/{id}")
     @Operation(summary = "Get a detailed travel activities")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseModel<Object> getTravelActivity(@PathVariable("id") UUID id) {
+    public ResponseModel<Object> getTravelActivity(Principal principal, @PathVariable("id") UUID id) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.getTravelActivity(id))
+                .data(travelActivityService.getTravelActivity(principal, id))
                 .errors(null)
                 .build();
 

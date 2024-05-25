@@ -17,10 +17,10 @@ import java.util.UUID;
 
 public interface ITravelActivityService {
     // Retrieve a list of popular travel activities
-    public List<TravelActivity> getPopularTravelActivities();
+    public List<TravelActivity> getPopularTravelActivities(Principal principal);
 
     // Retrieve a specific travel activity by its ID
-    public TravelActivity getTravelActivity(UUID activityId);
+    public TravelActivity getTravelActivity(Principal principal, UUID activityId);
 
     // Add a comment and rating to an activity
     public CommentResponseDTO comment(Principal principal, UUID activityId, ActivityCommentDTO activityCommentDTO);

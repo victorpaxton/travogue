@@ -5,6 +5,7 @@ import com.hcmut.travogue.model.dto.TravelActivity.CategoryCreateDTO;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityCategory;
 import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,9 +18,9 @@ public interface IActivityCategoryService {
     public void deleteCategory(UUID categoryId);
 
     // Retrieve popular activities within a specific category
-    public List<TravelActivity> getPopularTravelActivitiesByCategory(UUID categoryId);
+    public List<TravelActivity> getPopularTravelActivitiesByCategory(Principal principal, UUID categoryId);
 
     // Retrieve activities within a specific category and its children
-    public PageResponse<TravelActivity> getTravelActivitiesByCategory(UUID categoryId, String keyword, int pageNumber, int pageSize, String sortField);
+    public PageResponse<TravelActivity> getTravelActivitiesByCategory(Principal principal, UUID categoryId, String keyword, int pageNumber, int pageSize, String sortField);
 
 }
