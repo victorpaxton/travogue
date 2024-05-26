@@ -1,14 +1,12 @@
 package com.hcmut.travogue.service.impl;
 
 import com.hcmut.travogue.model.dto.Ticket.BookTicketDTO;
-import com.hcmut.travogue.model.entity.Ticket.PaymentInfo;
 import com.hcmut.travogue.model.entity.Ticket.Ticket;
 import com.hcmut.travogue.model.entity.Ticket.TicketStatus;
 import com.hcmut.travogue.model.entity.TravelActivity.ActivityTimeFrame;
-import com.hcmut.travogue.model.entity.TravelActivity.TravelActivity;
-import com.hcmut.travogue.model.entity.User.Host;
 import com.hcmut.travogue.model.entity.User.SessionUser;
 import com.hcmut.travogue.model.entity.User.User;
+import com.hcmut.travogue.repository.Ticket.InsuranceCompanyRepository;
 import com.hcmut.travogue.repository.Ticket.PaymentInfoRepository;
 import com.hcmut.travogue.repository.Ticket.TicketRepository;
 import com.hcmut.travogue.repository.TravelActivity.ActivityTimeFrameRepository;
@@ -38,6 +36,9 @@ public class TicketService implements ITicketService {
     private ActivityTimeFrameRepository activityTimeFrameRepository;
 
     @Autowired
+    private InsuranceCompanyRepository insuranceCompanyRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     @Override
@@ -53,6 +54,8 @@ public class TicketService implements ITicketService {
 
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
         newTicket.setUser(user);
+
+        newTicket.setInsurance(insuranceCompanyRepository.findById(bookTicketDTO.getInsuranceId()).orElseThrow());
 
         ActivityTimeFrame activityTimeFrame = activityTimeFrameRepository.findById(activityTimeFrameId).orElseThrow();
         newTicket.setActivityTimeFrame(activityTimeFrame);

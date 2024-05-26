@@ -32,4 +32,8 @@ public class InsuranceCompany extends BaseEntity {
     @OneToMany(mappedBy = "insurance")
     @JsonIgnore
     private List<InsuranceActivity> insuranceActivities;
+
+    @OneToMany(mappedBy = "insurance")
+    @JsonIgnore
+    private List<Ticket> tickets;
 }

@@ -66,4 +66,8 @@ public class Ticket extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "activity_time_frame_id", referencedColumnName = "id")
     private ActivityTimeFrame activityTimeFrame;
+
+    @ManyToOne
+    @JoinColumn(name = "insurance_id", referencedColumnName = "id")
+    private InsuranceCompany insurance;
 }
