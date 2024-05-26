@@ -1,5 +1,6 @@
 package com.hcmut.travogue.controller;
 
+import com.hcmut.travogue.model.dto.Host.ScheduleRequest;
 import com.hcmut.travogue.model.dto.Response.ResponseModel;
 import com.hcmut.travogue.service.IHostService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -49,11 +50,11 @@ public class HostController {
     @Operation(summary = "Get schedule in a date")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_HOST','ROLE_USER')")
-    public ResponseModel<Object> getScheduleInADay(@PathVariable("id") UUID hostId, @Param("date") Date date) {
+    public ResponseModel<Object> getScheduleInADay(@PathVariable("id") UUID hostId, @RequestBody ScheduleRequest scheduleRequest) {
 
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(hostService.getScheduleInADay(hostId, date))
+                .data(hostService.getScheduleInADay(hostId, scheduleRequest.getDate()))
                 .errors(null)
                 .build();
     }
