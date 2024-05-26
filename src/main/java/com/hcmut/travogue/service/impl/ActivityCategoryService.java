@@ -79,7 +79,7 @@ public class ActivityCategoryService implements IActivityCategoryService {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
         List<UUID> allChildCategories = activityCategoryRepository.findChildCategoryIds(categoryId);
 
-        return travelActivityRepository.findFirst10ByActivityCategory_IdOrderByTravelPointDesc(allChildCategories)
+        return travelActivityRepository.findFirst10ByActivityCategory_IdOrderByAverageRatingDesc(allChildCategories)
                 .stream().peek(travelActivity -> travelActivity.setLiked(wishlistRepository.existsByUser_IdAndTravelActivity_Id(user.getId(), travelActivity.getId()))).toList();
     }
 

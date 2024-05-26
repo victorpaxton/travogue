@@ -78,7 +78,7 @@ public class TravelActivityService implements ITravelActivityService {
     @Override
     public List<TravelActivity> getPopularTravelActivities(Principal principal) {
         User user = ((SessionUser) ((Authentication) principal).getPrincipal()).getUserInfo();
-        return travelActivityRepository.findFirst10ByOrderByTravelPointDesc()
+        return travelActivityRepository.findFirst10ByOrderByAverageRatingDesc()
                 .stream()
                 .peek(travelActivity -> travelActivity.setLiked(wishlistRepository.existsByUser_IdAndTravelActivity_Id(user.getId(), travelActivity.getId())))
                 .toList();
