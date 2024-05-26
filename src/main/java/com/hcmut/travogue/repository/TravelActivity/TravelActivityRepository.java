@@ -17,7 +17,7 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE t.activity_category_id IN (:categoryIds) " +
-            "ORDER BY t.travel_point DESC " +
+            "ORDER BY t.average_rating DESC " +
             "LIMIT 10", nativeQuery = true)
     List<TravelActivity> findFirst10ByActivityCategory_IdOrderByAverageRatingDesc(@Param("categoryIds") List<UUID> categoryIds);
 
