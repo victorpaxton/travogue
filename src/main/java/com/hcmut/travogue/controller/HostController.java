@@ -46,7 +46,7 @@ public class HostController {
                 .build();
     }
 
-    @GetMapping("/{id}/schedule-in-a-date")
+    @PostMapping("/{id}/schedule-in-a-date")
     @Operation(summary = "Get schedule in a date")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyAuthority('ROLE_HOST','ROLE_USER')")
