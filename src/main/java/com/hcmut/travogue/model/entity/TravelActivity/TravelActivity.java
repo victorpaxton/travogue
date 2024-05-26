@@ -83,7 +83,6 @@ public class TravelActivity extends BaseEntity {
     private List<PlanActivity> planActivities;
 
     @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<InsuranceActivity> insuranceActivities;
 
     @OneToMany(mappedBy = "travelActivity", cascade = CascadeType.ALL)
