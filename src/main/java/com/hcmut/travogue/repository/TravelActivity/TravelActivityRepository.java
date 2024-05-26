@@ -13,13 +13,13 @@ import java.util.UUID;
 
 @Repository
 public interface TravelActivityRepository extends JpaRepository<TravelActivity, UUID> {
-    List<TravelActivity> findFirst10ByOrderByTravelPointDesc();
+    List<TravelActivity> findFirst10ByOrderByAverageRatingDesc();
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE t.activity_category_id IN (:categoryIds) " +
             "ORDER BY t.travel_point DESC " +
             "LIMIT 10", nativeQuery = true)
-    List<TravelActivity> findFirst10ByActivityCategory_IdOrderByTravelPointDesc(@Param("categoryIds") List<UUID> categoryIds);
+    List<TravelActivity> findFirst10ByActivityCategory_IdOrderByAverageRatingDesc(@Param("categoryIds") List<UUID> categoryIds);
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE t.activity_category_id IN (:categoryIds) " +
