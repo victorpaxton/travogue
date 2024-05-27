@@ -71,24 +71,22 @@ public class HostService implements IHostService {
         Host host = hostRepository.findById(hostId).orElseThrow();
         List<TravelActivity> travelActivities = host.getTravelActivities();
 
-        return travelActivities.stream().map(travelActivity -> {
-            ScheduleDTO scheduleDTO = new ScheduleDTO();
-            scheduleDTO.setActivityName(travelActivity.getActivityName());
-            scheduleDTO.setMainImage(travelActivity.getMainImage());
-
-            travelActivity.getActivityDates().stream().filter(
-                    activityDate -> activityDate.getDate().equals(date)
-            ).forEach(activityDate -> {
-                activityDate.getActivityTimeFrames().forEach(
-                        activityTimeFrame -> {
-                            scheduleDTO.setStartAt(activityTimeFrame.getStartAt());
-                            scheduleDTO.setEndAt(activityTimeFrame.getEndAt());
-                            scheduleDTO.setMaxGuest(activityTimeFrame.getMaximumGuests());
-                            scheduleDTO.setGuestSize(activityTimeFrame.getNumOfRegisteredGuests());
-                        }
-                );
+        return travelActivities.stream().flatMap(travelActivity -> {
+            return travelActivity.getActivityDates()
+                    .stream().filter(activityDate -> activityDate.getDate().equals(date))
+                    .flatMap(activityDate -> {
+                            return activityDate.getActivityTimeFrames().stream().map(
+                                    activityTimeFrame -> {
+                                        ScheduleDTO scheduleDTO = new ScheduleDTO();
+                                        scheduleDTO.setActivityName(travelActivity.getActivityName());
+                                        scheduleDTO.setMainImage(travelActivity.getMainImage());
+                                        scheduleDTO.setStartAt(activityTimeFrame.getStartAt());
+                                        scheduleDTO.setEndAt(activityTimeFrame.getEndAt());
+                                        scheduleDTO.setMaxGuest(activityTimeFrame.getMaximumGuests());
+                                        scheduleDTO.setGuestSize(activityTimeFrame.getNumOfRegisteredGuests());
+                                        return scheduleDTO;
+                                    });
             });
-            return scheduleDTO;
         }).toList();
     }
 }
