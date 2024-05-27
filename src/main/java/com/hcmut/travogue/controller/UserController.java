@@ -5,9 +5,12 @@ import com.hcmut.travogue.service.IUserService;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.UUID;
 
@@ -56,6 +59,18 @@ public class UserController {
         return ResponseModel.builder()
                 .isSuccess(true)
                 .data(userService.getTicketsByUser(userId))
+                .errors(null)
+                .build();
+    }
+
+    @PostMapping(value = "/{id}/avatars", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Operation(summary = "Update avatar")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseModel<Object> uploadImage(@PathVariable("id") UUID userId, @RequestPart MultipartFile image) throws IOException {
+
+        return ResponseModel.builder()
+                .isSuccess(true)
+                .data(userService.uploadImage(userId, image))
                 .errors(null)
                 .build();
     }

@@ -1,5 +1,6 @@
 package com.hcmut.travogue.service.impl;
 
+import com.hcmut.travogue.file.CloudinaryService;
 import com.hcmut.travogue.model.dto.Response.PageResponse;
 import com.hcmut.travogue.model.dto.Ticket.TicketResponseDTO;
 import com.hcmut.travogue.model.dto.User.UserProfileDTO;
@@ -18,10 +19,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -35,6 +39,9 @@ public class UserService implements IUserService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private CloudinaryService cloudinaryService;
 
     @Autowired
     private ModelMapper modelMapper;
@@ -68,6 +75,18 @@ public class UserService implements IUserService {
                             .ticket(ticket)
                             .build();
                 }).toList();
+    }
+
+    @Override
+    public User uploadImage(UUID userId, MultipartFile image) throws IOException {
+        User user = userRepository.findById(userId).orElseThrow();
+        String cur = user.getAvatar();
+        if (Objects.equals(cur, "")) {
+            user.setAvatar(cloudinaryService.uploadFile("user", image));
+        } else {
+            user.setAvatar(cur + ";" + cloudinaryService.uploadFile("user", image));
+        }
+        return userRepository.save(user);
     }
 
 }
