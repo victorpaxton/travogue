@@ -80,12 +80,8 @@ public class UserService implements IUserService {
     @Override
     public User uploadImage(UUID userId, MultipartFile image) throws IOException {
         User user = userRepository.findById(userId).orElseThrow();
-        String cur = user.getAvatar();
-        if (Objects.equals(cur, "")) {
-            user.setAvatar(cloudinaryService.uploadFile("user", image));
-        } else {
-            user.setAvatar(cur + ";" + cloudinaryService.uploadFile("user", image));
-        }
+        user.setAvatar(cloudinaryService.uploadFile("user", image));
+
         return userRepository.save(user);
     }
 
