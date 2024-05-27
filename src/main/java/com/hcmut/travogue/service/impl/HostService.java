@@ -77,7 +77,7 @@ public class HostService implements IHostService {
             scheduleDTO.setMainImage(travelActivity.getMainImage());
 
             travelActivity.getActivityDates().stream().filter(
-                    activityDate -> activityDate.getDate() == date
+                    activityDate -> activityDate.getDate().equals(date)
             ).forEach(activityDate -> {
                 activityDate.getActivityTimeFrames().forEach(
                         activityTimeFrame -> {
