@@ -78,6 +78,7 @@ public class HostService implements IHostService {
                             return activityDate.getActivityTimeFrames().stream().map(
                                     activityTimeFrame -> {
                                         ScheduleDTO scheduleDTO = new ScheduleDTO();
+                                        scheduleDTO.setActivityTimeFrameId(travelActivity.getId());
                                         scheduleDTO.setActivityName(travelActivity.getActivityName());
                                         scheduleDTO.setMainImage(travelActivity.getMainImage());
                                         scheduleDTO.setStartAt(activityTimeFrame.getStartAt());
