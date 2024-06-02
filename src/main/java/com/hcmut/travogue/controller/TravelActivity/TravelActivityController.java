@@ -199,10 +199,11 @@ public class TravelActivityController {
     public ResponseModel<Object> searchActivities(@RequestParam String criteria,
                                                      @RequestParam(defaultValue = "0") int pageNumber,
                                                      @RequestParam(defaultValue = "4") int pageSize,
-                                                     @RequestParam(defaultValue = "updated_at") String sortField) {
+                                                     @RequestParam(defaultValue = "updated_at") String sortField,
+                                                  @RequestParam(required = false) UUID cityId) {
         return ResponseModel.builder()
                 .isSuccess(true)
-                .data(travelActivityService.searchActivities(pageNumber, pageSize, sortField, criteria))
+                .data(travelActivityService.searchActivities(pageNumber, pageSize, sortField, criteria, cityId))
                 .errors(null)
                 .build();
     }

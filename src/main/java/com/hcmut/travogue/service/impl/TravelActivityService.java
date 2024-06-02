@@ -283,11 +283,11 @@ public class TravelActivityService implements ITravelActivityService {
     }
 
     @Override
-    public PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria) {
+    public PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria, UUID cityId) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
 
         return new PageResponse<>(
-                travelActivityRepository.findPageActivities(criteria, pageable)
+                travelActivityRepository.findPageActivities(criteria, cityId, pageable)
                         .map(travelActivity -> {
                             TravelActivityShortResponse res = modelMapper.map(travelActivity, TravelActivityShortResponse.class);
                             res.setCategoryName(travelActivity.getActivityCategory().getCategoryName());
