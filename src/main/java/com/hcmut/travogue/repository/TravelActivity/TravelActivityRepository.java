@@ -60,8 +60,7 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
     Double calcAvgRating(@Param("activityId") UUID activityId, @Param("newRating") double newRating);
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
-            "WHERE t.activity_name " +
-            "ILIKE %:keyword%" +
+            "WHERE (t.activity_name ILIKE %:keyword%)" +
             "AND (t.city_id = :cityId OR :cityId IS NULL)", nativeQuery = true)
     Page<TravelActivity> findPageActivities(@Param("keyword") String keyword, @Param("cityId") UUID cityId, Pageable pageable);
 }

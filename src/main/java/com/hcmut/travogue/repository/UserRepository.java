@@ -19,6 +19,6 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     @Query(value = "SELECT * FROM _user AS u " +
             "WHERE CONCAT(u.email, ' ', u.first_name, ' ', u.last_name) " +
-            "LIKE %:keyword%", nativeQuery = true)
+            "ILIKE %:keyword%", nativeQuery = true)
     Page<User> findPageUsers(@Param("keyword") String keyword, Pageable pageable);
 }
