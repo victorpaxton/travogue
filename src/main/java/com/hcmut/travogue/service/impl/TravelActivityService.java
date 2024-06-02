@@ -286,8 +286,21 @@ public class TravelActivityService implements ITravelActivityService {
     public PageResponse<TravelActivityShortResponse> searchActivities(int pageNumber, int pageSize, String sortField, String criteria, UUID cityId) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize, Sort.by(sortField).ascending());
 
+        if (cityId != null)
+            return new PageResponse<>(
+                    travelActivityRepository.findPageActivitiesWithCityId(criteria, cityId, pageable)
+                            .map(travelActivity -> {
+                                TravelActivityShortResponse res = modelMapper.map(travelActivity, TravelActivityShortResponse.class);
+                                res.setCategoryName(travelActivity.getActivityCategory().getCategoryName());
+                                res.setCityName(travelActivity.getCity().getName());
+                                res.setRating(travelActivity.getAverageRating());
+                                res.setNumberOfRating(activityCommentRepository.countAllByTravelActivity_Id(travelActivity.getId()));
+                                return res;
+                            })
+            );
+
         return new PageResponse<>(
-                travelActivityRepository.findPageActivities(criteria, cityId, pageable)
+                travelActivityRepository.findPageActivities(criteria, pageable)
                         .map(travelActivity -> {
                             TravelActivityShortResponse res = modelMapper.map(travelActivity, TravelActivityShortResponse.class);
                             res.setCategoryName(travelActivity.getActivityCategory().getCategoryName());
@@ -297,5 +310,6 @@ public class TravelActivityService implements ITravelActivityService {
                             return res;
                         })
         );
+
     }
 }

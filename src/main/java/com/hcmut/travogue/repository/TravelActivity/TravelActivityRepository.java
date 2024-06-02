@@ -61,6 +61,10 @@ public interface TravelActivityRepository extends JpaRepository<TravelActivity, 
 
     @Query(value = "SELECT * FROM travel_activity AS t " +
             "WHERE (t.activity_name ILIKE %:keyword%)" +
-            "AND (t.city_id = :cityId OR :cityId IS NULL)", nativeQuery = true)
-    Page<TravelActivity> findPageActivities(@Param("keyword") String keyword, @Param("cityId") UUID cityId, Pageable pageable);
+            "AND (t.city_id = :cityId)", nativeQuery = true)
+    Page<TravelActivity> findPageActivitiesWithCityId(@Param("keyword") String keyword, @Param("cityId") UUID cityId, Pageable pageable);
+
+    @Query(value = "SELECT * FROM travel_activity AS t " +
+            "WHERE t.activity_name ILIKE %:keyword%", nativeQuery = true)
+    Page<TravelActivity> findPageActivities(@Param("keyword") String keyword, Pageable pageable);
 }
